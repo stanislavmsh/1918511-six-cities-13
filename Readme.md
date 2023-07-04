@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Stanislav Belov](https://up.htmlacademy.ru/react/13/user/1918511).
-* Наставник: `Неизвестно`.
+* Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865).
 
 ---
 
