@@ -1,4 +1,4 @@
-import MainScreen from '../../pages/main/main';
+import MainScreen from '../../pages/main-screen/main-screen';
 
 type AppScreenProps = {
   offersCount: number;
