@@ -8,11 +8,11 @@ import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PrivateRoute from '../private-route/private-route';
 
 
-type AppScreenProps = {
+type AppProps = {
   offersCount: number;
 }
 
-function App({offersCount}: AppScreenProps): JSX.Element {
+function App({offersCount}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
