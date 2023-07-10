@@ -1,11 +1,13 @@
 import SingleCard from '../../components/single-card/single-card';
 import Header from '../../components/header/header';
+import { OffersList } from '../../types/offers-list';
 
 type MainScreenProps = {
   offersCount: number ;
+  offersList: OffersList[];
 }
 
-function MainScreen ({ offersCount }: MainScreenProps) : JSX.Element {
+function MainScreen ({ offersCount , offersList }: MainScreenProps) : JSX.Element {
 
   return (
     <div className="page page--gray page--main">
@@ -70,11 +72,16 @@ function MainScreen ({ offersCount }: MainScreenProps) : JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
+                {/* <SingleCard />
                 <SingleCard />
                 <SingleCard />
                 <SingleCard />
-                <SingleCard />
-                <SingleCard />
+                <SingleCard /> */}
+                {offersList.map((elem) =>
+                  (
+                    <SingleCard key={elem.id} offer={elem}/>
+                  )
+                )}
               </div>
             </section>
             <div className="cities__right-section">
