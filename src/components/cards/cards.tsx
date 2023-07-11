@@ -6,7 +6,11 @@ type CardsProps = {
 };
 
 function Cards({ cardsList }: CardsProps) {
-  return cardsList.map((elem) => <SingleCard key={elem.id} offer={elem} />);
+  return (
+    <div className="cities__places-list places__list tabs__content">
+      {cardsList.map((elem) => <SingleCard key={elem.id} offer={elem} />)}
+    </div>
+  );
 }
 
 export default Cards;

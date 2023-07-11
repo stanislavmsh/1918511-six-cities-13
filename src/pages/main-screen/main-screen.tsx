@@ -83,9 +83,9 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <Cards cardsList={offersList} />
-              </div>
+
+              <Cards cardsList={offersList} />
+
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

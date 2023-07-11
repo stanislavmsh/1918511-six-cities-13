@@ -32,7 +32,7 @@ export const offers: OffersList[] = [
     'price': 349,
     'previewImage': 'https://13.design.pages.academy/static/hotel/6.jpg',
     'city': {
-      'name': 'Paris',
+      'name': 'Saray',
       'location': {
         'latitude': 48.85661,
         'longitude': 2.351499,
@@ -56,7 +56,7 @@ export const offers: OffersList[] = [
     'price': 956,
     'previewImage': 'https://13.design.pages.academy/static/hotel/9.jpg',
     'city': {
-      'name': 'Paris',
+      'name': 'Gorod',
       'location': {
         'latitude': 48.85661,
         'longitude': 2.351499,
