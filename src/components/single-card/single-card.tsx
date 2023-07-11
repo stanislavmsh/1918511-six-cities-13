@@ -1,21 +1,34 @@
 import { OffersList } from '../../types/offers-list';
+import { useState } from 'react';
 
 type SingleCardProps = {
   offer: OffersList;
 };
 
 function SingleCard(props: SingleCardProps): JSX.Element {
-  const {offer} = props;
-  const {price , title, type, id } = offer;
+  const { offer } = props;
+  const { price, title, type, id } = offer;
+  const [isHovered, setIsHovered] = useState(false);
 
-  return(
-    <article key={id} className="cities__card place-card">
+  return (
+    <article
+      onMouseEnter={() => setIsHovered(!isHovered)}
+      onMouseLeave={() => setIsHovered(!isHovered)}
+      key={id}
+      className="cities__card place-card"
+    >
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width="260" height="200" alt="Place image"/>
+          <img
+            className="place-card__image"
+            src="img/apartment-01.jpg"
+            width="260"
+            height="200"
+            alt="Place image"
+          />
         </a>
       </div>
       <div className="place-card__info">
@@ -33,7 +46,7 @@ function SingleCard(props: SingleCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{ width: '80%' }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
