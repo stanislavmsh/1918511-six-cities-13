@@ -1,11 +1,11 @@
 import { OffersList } from '../../types/offers-list';
 import { useState } from 'react';
 
-type SingleCardProps = {
+type CardProps = {
   offer: OffersList;
 };
 
-function SingleCard(props: SingleCardProps): JSX.Element {
+function Card(props: CardProps): JSX.Element {
   const { offer } = props;
   const { price, title, type, id } = offer;
   const [isHovered, setIsHovered] = useState(false);
@@ -59,4 +59,4 @@ function SingleCard(props: SingleCardProps): JSX.Element {
   );
 }
 
-export default SingleCard;
+export default Card;

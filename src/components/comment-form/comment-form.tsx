@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react';
+import Stars from '../stars/stars';
 
 type CommentFormProps = {
   rating: number;
@@ -7,7 +8,7 @@ type CommentFormProps = {
 
 function CommentForm(): JSX.Element {
   const [form, setForm] = useState<CommentFormProps>({ rating: 0, text: '' });
-  const starHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevState) => ({
       ...prevState,
       rating: Number(evt.target.value),
@@ -28,9 +29,9 @@ function CommentForm(): JSX.Element {
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
-      <div className="reviews__rating-form form__rating">
+      {/* <div className="reviews__rating-form form__rating">
         <input
-          onChange={starHandler}
+          onChange={onStarChangeHandler}
           className="form__rating-input visually-hidden"
           name="rating"
           value="5"
@@ -118,7 +119,8 @@ function CommentForm(): JSX.Element {
             <use xlinkHref="#icon-star"></use>
           </svg>
         </label>
-      </div>
+      </div> */}
+      <Stars handler={onStarChangeHandler}/>
       <textarea
         onChange={textChangeHandler}
         className="reviews__textarea form__textarea"

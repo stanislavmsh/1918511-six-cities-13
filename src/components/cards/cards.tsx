@@ -1,4 +1,4 @@
-import SingleCard from '../single-card/single-card';
+import Card from '../card/card';
 import { OffersList } from '../../types/offers-list';
 
 type CardsProps = {
@@ -8,7 +8,7 @@ type CardsProps = {
 function Cards({ cardsList }: CardsProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {cardsList.map((elem) => <SingleCard key={elem.id} offer={elem} />)}
+      {cardsList.map((elem) => <Card key={elem.id} offer={elem} />)}
     </div>
   );
 }
