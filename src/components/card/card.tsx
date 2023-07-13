@@ -1,19 +1,26 @@
 import { OffersList } from '../../types/offers-list';
-import { useState } from 'react';
+import { MouseEvent} from 'react';
 
 type CardProps = {
   offer: OffersList;
+  onListItemHover: (listItemId: string) => void;
 };
 
 function Card(props: CardProps): JSX.Element {
-  const { offer } = props;
+  const { offer, onListItemHover } = props;
   const { price, title, type, id } = offer;
-  const [isHovered, setIsHovered] = useState(false);
+  // const [isHovered, setIsHovered] = useState(false);
+
+  const handleCardItemHover = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    // console.log(evt.currentTarget.id);
+    onListItemHover(evt.currentTarget.id); // ТУТ НАДО ДУМНО ПОДУМАТЬ
+  };
 
   return (
     <article
-      onMouseEnter={() => setIsHovered(!isHovered)}
-      onMouseLeave={() => setIsHovered(!isHovered)}
+      id = {id}
+      onMouseEnter={handleCardItemHover}
       key={id}
       className="cities__card place-card"
     >
