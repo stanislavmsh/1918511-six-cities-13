@@ -1,16 +1,16 @@
-export const Setting = {
-  OffersCount: 212,
-};
+export const enum Setting {
+  OffersCount = 212,
+}
 
-export enum AppRoute {
+export const enum AppRoute {
   Root = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer/:id',
+  Offer = '/offer',
 }
 
-export enum AuthStatus {
+export const enum AuthStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
-  Unknown = 'UNKNOWN'
+  Unknown = 'UNKNOWN',
 }
