@@ -8,6 +8,7 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PrivateRoute from '../private-route/private-route';
 
+
 type AppProps = {
   offersCount: number;
   offersList: OffersList[];

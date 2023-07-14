@@ -1,6 +1,8 @@
 import Header from '../../components/header/header';
 import { OffersList } from '../../types/offers-list';
 import Cards from '../../components/cards/cards';
+import { useState } from 'react';
+import Map from '../../components/map/map';
 
 type MainScreenProps = {
   offersCount: number;
@@ -8,6 +10,13 @@ type MainScreenProps = {
 };
 
 function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
+  const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
+
+  const handleListItemHover = (listItemId: string) => {
+    const currentOffer = offersList.find((offer) => offer.id === listItemId);
+
+    setSelectedOffer(currentOffer);
+  };
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -84,11 +93,13 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
 
-              <Cards cardsList={offersList} />
+              <Cards cardsList={offersList} onListItemHover={handleListItemHover}/>
 
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map offers={offersList} selectedPoint={selectedOffer}/>
+              </section>
             </div>
           </div>
         </div>
