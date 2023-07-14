@@ -2,11 +2,12 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import useMap from '../../hooks/use-map';
 import { OffersList} from '../../types/offers-list';
+import { SingleOffer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  offers: OffersList[];
+  offers: OffersList[] | SingleOffer[];
   selectedPoint: OffersList | undefined;
 };
 

@@ -30,7 +30,7 @@ function CommentForm(): JSX.Element {
         Your review
       </label>
 
-      <Stars handler={onStarChangeHandler}/>
+      <Stars onStarChange={onStarChangeHandler}/>
 
       <textarea
         onChange={textChangeHandler}

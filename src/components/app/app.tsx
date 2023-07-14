@@ -1,6 +1,7 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import { OffersList } from '../../types/offers-list';
+import { SingleOffer } from '../../types/offer';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
@@ -12,9 +13,10 @@ import PrivateRoute from '../private-route/private-route';
 type AppProps = {
   offersCount: number;
   offersList: OffersList[];
+  offerScreenMock: SingleOffer[];
 };
 
-function App({ offersCount, offersList }: AppProps): JSX.Element {
+function App({ offersCount, offersList, offerScreenMock }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -33,7 +35,7 @@ function App({ offersCount, offersList }: AppProps): JSX.Element {
           }
         />
         <Route path={AppRoute.Login} element={<LoginScreen />} />
-        <Route path={`${AppRoute.Offer}/:id`} element={<OfferScreen />} />
+        <Route path={`${AppRoute.Offer}/:id`} element={<OfferScreen offersList={offersList} offerBigList={offerScreenMock}/>} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </BrowserRouter>

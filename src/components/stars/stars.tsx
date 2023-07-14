@@ -1,19 +1,19 @@
 import React from 'react';
-const AMOUNT = [1, 2, 3, 4, 5];
+const RATING_STARS_AMOUNT = [1, 2, 3, 4, 5];
 
 type StarsProps = {
-  handler: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  onStarChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Stars ({handler} : StarsProps) : JSX.Element {
+function Stars ({onStarChange} : StarsProps) : JSX.Element {
   return (
     <div className="reviews__rating-form form__rating">
 
-      {AMOUNT.map((elem) =>
+      {RATING_STARS_AMOUNT.map((elem) =>
         (
           <React.Fragment key={elem}>
             <input
-              onChange={handler}
+              onChange={onStarChange}
               className="form__rating-input visually-hidden"
               name="rating"
               value={`${elem}`}
