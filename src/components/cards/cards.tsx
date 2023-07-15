@@ -9,7 +9,7 @@ type CardsProps = {
 function Cards({ cardsList , onListItemHover }: CardsProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {cardsList.map((elem) => <Card key={elem.id} offer={elem} onListItemHover={onListItemHover} />)}
+      {cardsList.map((elem) => <Card key={elem.id} isOfferPage offer={elem} onListItemHover={onListItemHover} />)}
     </div>
   );
 }

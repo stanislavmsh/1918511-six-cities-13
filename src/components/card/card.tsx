@@ -1,20 +1,21 @@
 import { OffersList } from '../../types/offers-list';
 import { MouseEvent} from 'react';
+import { Link } from 'react-router-dom';
+import cn from 'classnames';
 
 type CardProps = {
   offer: OffersList;
   onListItemHover: (listItemId: string) => void;
+  isOfferPage : boolean;
 };
 
 function Card(props: CardProps): JSX.Element {
-  const { offer, onListItemHover } = props;
-  const { price, title, type, id } = offer;
-  // const [isHovered, setIsHovered] = useState(false);
+  const { offer, onListItemHover , isOfferPage} = props;
+  const { price, title, type, id, previewImage , isPremium , rating} = offer;
 
   const handleCardItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
-    // console.log(evt.currentTarget.id);
-    onListItemHover(evt.currentTarget.id); // ТУТ НАДО ДУМНО ПОДУМАТЬ
+    onListItemHover(offer.id);
   };
 
   return (
@@ -22,16 +23,27 @@ function Card(props: CardProps): JSX.Element {
       id = {id}
       onMouseEnter={handleCardItemHover}
       key={id}
-      className="cities__card place-card"
+      // className="cities__card place-card"
+      className={cn('place-card',
+        {'cities__card': isOfferPage},
+        {'near-places__card' : !isOfferPage}
+      )}
     >
+      {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      </div>}
+      <div
+      //  className="cities__image-wrapper place-card__image-wrapper"
+        className={cn('place-card__image-wrapper',
+          {'cities__image-wrapper': isOfferPage},
+          {'near-places__image-wrapper': !isOfferPage}
+        )}
+      >
         <a href="#">
           <img
             className="place-card__image"
-            src="img/apartment-01.jpg"
+            src={`${previewImage}`}
             width="260"
             height="200"
             alt="Place image"
@@ -53,12 +65,12 @@ function Card(props: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: `${rating / 5 * 100}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
