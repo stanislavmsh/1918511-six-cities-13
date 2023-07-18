@@ -6,13 +6,16 @@ import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
 import { useParams } from 'react-router-dom';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
+import { useAppSelector } from '../../hooks';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
-  offersList: OffersList[];
+  // offersList: OffersList[];
 }
 
-function OfferScreen({offerBigList, offersList}: OfferScreenProps): JSX.Element {
+function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
+  const offersList = useAppSelector((state) => state.offers);
+
   const newOffersBigList = [...offerBigList];
   const newOffersList = [...offersList];
   const parsedId = useParams().id;

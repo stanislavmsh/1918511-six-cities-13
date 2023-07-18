@@ -1,12 +1,15 @@
 import Header from '../../components/header/header';
 import Favorites from '../../components/favorites/favorites';
-import { OffersList } from '../../types/offers-list';
+// import { OffersList } from '../../types/offers-list';
+import { useAppSelector } from '../../hooks';
 
-type FavoriteScreenProps = {
-  favList: OffersList[];
-};
+// type FavoriteScreenProps = {
+//   favList: OffersList[];
+// };
 
-function FavoritesScreen({ favList }: FavoriteScreenProps): JSX.Element {
+function FavoritesScreen(): JSX.Element {
+  const favList = useAppSelector((state) => state.offers);
+
   return (
     <div className="page">
       <Header />

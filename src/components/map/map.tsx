@@ -24,15 +24,16 @@ const currentCustomIcon = new Icon({
 });
 
 function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
+
   const mapRef = useRef(null);
-  const map = useMap(mapRef, offers[1].city);
+  const map = useMap(mapRef, offers[0].city);
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.city.location.latitude,
-          lng: offer.city.location.longitude,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker.setIcon(

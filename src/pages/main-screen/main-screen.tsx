@@ -1,22 +1,35 @@
-import Header from '../../components/header/header';
 import { OffersList } from '../../types/offers-list';
-import Cards from '../../components/cards/cards';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import CitiesList from '../../components/cities/cities';
+import Header from '../../components/header/header';
+import Cards from '../../components/cards/cards';
 import Map from '../../components/map/map';
+import { getOffers } from '../../store/action';
 
-type MainScreenProps = {
-  offersCount: number;
-  offersList: OffersList[];
-};
+// type MainScreenProps = {
+//   offersList: OffersList[];
+// };
 
-function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
+function MainScreen(): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
-
+  const offersList = useAppSelector((state) => state.offers);
   const handleListItemHover = (listItemId: string) => {
     const currentOffer = offersList.find((offer) => offer.id === listItemId);
 
     setSelectedOffer(currentOffer);
   };
+
+  const selectedCity = useAppSelector((state) => state.city);
+  // const dispatch = useAppDispatch();
+
+  // const filterDataByCity =
+  // (offers : OffersList[], cityName: string) : OffersList[] =>
+  //   offers.filter((elem) => elem.city.name === cityName);
+
+
+  // dispatch(getOffers({ cityName: selectedCity}));
+  const filteredOffersByCity = useAppSelector((state) => state.offers);
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -26,36 +39,7 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              <CitiesList />
             </ul>
           </section>
         </div>
@@ -64,7 +48,7 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offersCount} places to stay in Amsterdam
+                {filteredOffersByCity.length} place{filteredOffersByCity.length !== 1 ? 's' : ''} to stay in {selectedCity}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
@@ -93,12 +77,12 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
 
-              <Cards cardsList={offersList} onListItemHover={handleListItemHover}/>
+              <Cards cardsList={filteredOffersByCity} onListItemHover={handleListItemHover}/>
 
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offersList} selectedPoint={selectedOffer}/>
+                {filteredOffersByCity.length !== 0 && <Map offers={filteredOffersByCity} selectedPoint={selectedOffer}/>}
               </section>
             </div>
           </div>
