@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import { offers } from './mocks/offers';
+// import { offers } from './mocks/offers';
 import { offerScreenMock } from './mocks/offer-screen-mock';
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -14,7 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App
-        offersList = {offers}
+        // offersList = {offers}
         offerScreenMock = {offerScreenMock}
       />
     </Provider>

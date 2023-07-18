@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import styles from './login-screen.module.css';
 
 
 function LoginScreen(): JSX.Element {
@@ -9,7 +10,7 @@ function LoginScreen(): JSX.Element {
           <div className="header__wrapper">
             <div className="header__left">
               <Link className="header__logo-link" to="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
+                <img className={`header__logo ${styles.header__logo}`} src="img/logo.svg" alt="6 cities logo"/>
               </Link>
             </div>
           </div>

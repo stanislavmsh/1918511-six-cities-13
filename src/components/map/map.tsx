@@ -5,6 +5,7 @@ import { OffersList} from '../../types/offers-list';
 import { SingleOffer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
+import style from './map.module.css';
 
 type MapProps = {
   offers: OffersList[] | SingleOffer[];
@@ -49,7 +50,7 @@ function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
     }
   }, [map, offers, selectedPoint]);
 
-  return <div style = {{height: '100%'}} ref={mapRef}></div>;
+  return <div className={style.map_iframe} ref={mapRef}></div>;
 
 }
 

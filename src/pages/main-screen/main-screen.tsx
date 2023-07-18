@@ -1,37 +1,34 @@
 import { OffersList } from '../../types/offers-list';
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getSortedOffers } from '../../store/action';
 import CitiesList from '../../components/cities/cities';
 import Header from '../../components/header/header';
 import Cards from '../../components/cards/cards';
 import Map from '../../components/map/map';
-import { getOffers } from '../../store/action';
+import styles from './main-screen.module.css';
 
-// type MainScreenProps = {
-//   offersList: OffersList[];
-// };
 
 function MainScreen(): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
-  const offersList = useAppSelector((state) => state.offers);
+  const selectedCityName = useAppSelector((state) => state.city);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getSortedOffers({ cityName: selectedCityName})); // узнать почему как бы уводит в мертвый луп вне хука useEffect
+  }, [dispatch, selectedCityName]);
+
+  const filteredOffersByCity = useAppSelector((state) => state.sortedOffers);
+
   const handleListItemHover = (listItemId: string) => {
-    const currentOffer = offersList.find((offer) => offer.id === listItemId);
+    const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 
     setSelectedOffer(currentOffer);
   };
 
-  const selectedCity = useAppSelector((state) => state.city);
-  // const dispatch = useAppDispatch();
-
-  // const filterDataByCity =
-  // (offers : OffersList[], cityName: string) : OffersList[] =>
-  //   offers.filter((elem) => elem.city.name === cityName);
-
-
-  // dispatch(getOffers({ cityName: selectedCity}));
-  const filteredOffersByCity = useAppSelector((state) => state.offers);
   return (
     <div className="page page--gray page--main">
+
       <Header />
 
       <main className="page__main page__main--index">
@@ -39,8 +36,11 @@ function MainScreen(): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
+
               <CitiesList />
+
             </ul>
+
           </section>
         </div>
         <div className="cities">
@@ -48,13 +48,13 @@ function MainScreen(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {filteredOffersByCity.length} place{filteredOffersByCity.length !== 1 ? 's' : ''} to stay in {selectedCity}
+                {filteredOffersByCity.length} place{filteredOffersByCity.length !== 1 ? 's' : ''} to stay in {selectedCityName}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
                   Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
+                  <svg className={`places__sorting-arrow ${styles.sorting__arrow}`}>
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>

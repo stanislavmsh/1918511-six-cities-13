@@ -1,16 +1,18 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { getOffers , cityNameChange, getCurrentStateOffers} from './action';
+import { cityNameChange, getSortedOffers} from './action';
 import { OffersList } from '../types/offers-list';
 import { offers } from '../mocks/offers';
 
 type IinitialState = {
   city: string;
   offers: OffersList[];
+  sortedOffers: OffersList[];
 }
 
 const initialState: IinitialState = {
   'city': 'Paris', // Paris
-  'offers': offers,
+  'sortedOffers': [],
+  offers,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -18,11 +20,8 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(cityNameChange, (state , action) => {
       state.city = action.payload.city;
     })
-    .addCase(getCurrentStateOffers, (state) => {
-      state.offers = [...state.offers];
-    })
-    .addCase(getOffers, (state, action) => {
-      state.offers = state.offers.filter((elem) => elem.city.name === action.payload.cityName);
+    .addCase(getSortedOffers, (state, action) => {
+      state.sortedOffers = state.offers.filter((elem) => elem.city.name === action.payload.cityName); // узнать почему нельзя взаимодействовать с offers а только со state.offers
     });
 });
 
