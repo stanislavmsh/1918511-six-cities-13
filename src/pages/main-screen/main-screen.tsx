@@ -35,11 +35,8 @@ function MainScreen(): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
 
-              <CitiesList />
-
-            </ul>
+            <CitiesList />
 
           </section>
         </div>
