@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SortingOption } from '../../const';
 import styles from './sorting-options.module.css';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { resetToDefault, sortByRating, sortHighToLow, sortLowToHigh } from '../../store/action';
 
 function SortingOptions() : JSX.Element {
   const [isOpened, setIsOpened] = useState<boolean>(false);
@@ -14,6 +16,28 @@ function SortingOptions() : JSX.Element {
   const handleOptionClick = (optionText : string) => {
     setSelectedSort(optionText);
     setIsOpened(false);
+  };
+
+  const dispatch = useDispatch();
+
+  const handleSortHighToLow = () => {
+    handleOptionClick(SortingOption.HighToLow);
+    dispatch(sortHighToLow());
+  };
+
+  const handleSortLowToHigh = () => {
+    handleOptionClick(SortingOption.LowToHigh);
+    dispatch(sortLowToHigh());
+  };
+
+  const resetDefault = () => {
+    handleOptionClick(SortingOption.Popular);
+    dispatch(resetToDefault());
+  };
+
+  const handleDortByRating = () => {
+    handleOptionClick(SortingOption.Top);
+    dispatch(sortByRating());
   };
 
   return (
@@ -38,7 +62,7 @@ function SortingOptions() : JSX.Element {
             {'places__option--active' : selectedSort === SortingOption.Popular}
           )}
           tabIndex={0}
-          onClick={() => handleOptionClick(SortingOption.Popular)}
+          onClick={resetDefault}
         >
           {SortingOption.Popular}
         </li>
@@ -46,7 +70,7 @@ function SortingOptions() : JSX.Element {
           {'places__option--active' : selectedSort === SortingOption.LowToHigh}
         )}
         tabIndex={0}
-        onClick={() => handleOptionClick(SortingOption.LowToHigh)}
+        onClick={handleSortLowToHigh }
         >
           {SortingOption.LowToHigh}
         </li>
@@ -54,7 +78,7 @@ function SortingOptions() : JSX.Element {
           {'places__option--active' : selectedSort === SortingOption.HighToLow}
         )}
         tabIndex={0}
-        onClick={() => handleOptionClick(SortingOption.HighToLow)}
+        onClick={handleSortHighToLow}
         >
           {SortingOption.HighToLow}
         </li>
@@ -62,7 +86,7 @@ function SortingOptions() : JSX.Element {
           {'places__option--active' : selectedSort === SortingOption.Top}
         )}
         tabIndex={0}
-        onClick={() => handleOptionClick(SortingOption.Top)}
+        onClick={handleDortByRating}
         >
           {SortingOption.Top}
         </li>
