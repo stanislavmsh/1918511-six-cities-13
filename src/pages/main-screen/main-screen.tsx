@@ -1,62 +1,43 @@
-import Header from '../../components/header/header';
 import { OffersList } from '../../types/offers-list';
+import { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getSortedOffers } from '../../store/action';
+import CitiesList from '../../components/cities/cities';
+import Header from '../../components/header/header';
 import Cards from '../../components/cards/cards';
-import { useState } from 'react';
 import Map from '../../components/map/map';
+import styles from './main-screen.module.css';
 
-type MainScreenProps = {
-  offersCount: number;
-  offersList: OffersList[];
-};
 
-function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
+function MainScreen(): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
+  const selectedCityName = useAppSelector((state) => state.city);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getSortedOffers({ cityName: selectedCityName})); // узнать почему как бы уводит в мертвый луп вне хука useEffect
+  }, [dispatch, selectedCityName]);
+
+  const filteredOffersByCity = useAppSelector((state) => state.sortedOffers);
 
   const handleListItemHover = (listItemId: string) => {
-    const currentOffer = offersList.find((offer) => offer.id === listItemId);
+    const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 
     setSelectedOffer(currentOffer);
   };
+
   return (
     <div className="page page--gray page--main">
+
       <Header />
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+
+            <CitiesList />
+
           </section>
         </div>
         <div className="cities">
@@ -64,13 +45,13 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offersCount} places to stay in Amsterdam
+                {filteredOffersByCity.length} place{filteredOffersByCity.length !== 1 ? 's' : ''} to stay in {selectedCityName}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
                   Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
+                  <svg className={`places__sorting-arrow ${styles.sorting__arrow}`}>
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
@@ -93,12 +74,12 @@ function MainScreen({ offersCount, offersList }: MainScreenProps): JSX.Element {
                 </ul>
               </form>
 
-              <Cards cardsList={offersList} onListItemHover={handleListItemHover}/>
+              <Cards cardsList={filteredOffersByCity} onListItemHover={handleListItemHover}/>
 
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={offersList} selectedPoint={selectedOffer}/>
+                {filteredOffersByCity.length !== 0 && <Map offers={filteredOffersByCity} selectedPoint={selectedOffer}/>}
               </section>
             </div>
           </div>

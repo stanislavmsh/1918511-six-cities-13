@@ -6,13 +6,16 @@ import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
 import { useParams } from 'react-router-dom';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
+import { useAppSelector } from '../../hooks';
+import styles from './offer-screen.module.css';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
-  offersList: OffersList[];
 }
 
-function OfferScreen({offerBigList, offersList}: OfferScreenProps): JSX.Element {
+function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
+  const offersList = useAppSelector((state) => state.offers);
+
   const newOffersBigList = [...offerBigList];
   const newOffersList = [...offersList];
   const parsedId = useParams().id;
@@ -58,7 +61,7 @@ function OfferScreen({offerBigList, offersList}: OfferScreenProps): JSX.Element 
                   {currentOffer.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
+                  <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -132,12 +135,11 @@ function OfferScreen({offerBigList, offersList}: OfferScreenProps): JSX.Element 
             </div>
           </div>
           <section className="offer__map map">
-            <Map offers={newOffersList} selectedPoint={undefined} />
+            {newOffersList.length !== 0 && <Map offers={newOffersList} selectedPoint={undefined} />}
           </section>
         </section>
         <div className="container">
-
-          <NearbyCards offersList={newOffersList} onListItemHover={()=> null} />
+          {newOffersList.length !== 0 && <NearbyCards offersList={newOffersList} onListItemHover={()=> null} />}
 
         </div>
       </main>

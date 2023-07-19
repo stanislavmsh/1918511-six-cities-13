@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { OffersList } from '../../types/offers-list';
 import { AppRoute } from '../../const';
+import styles from './favorites.module.css';
 
 type FavotiresProps = {
   favList: OffersList[];
@@ -34,10 +35,8 @@ function Favorites ({favList} : FavotiresProps) : JSX.Element {
                   <div className="favorites__image-wrapper place-card__image-wrapper">
                     <Link to="#">
                       <img
-                        className="place-card__image"
+                        className={`place-card__image ${styles.place_card__image}`}
                         src={elem.previewImage}
-                        width="150"
-                        height="110"
                         alt="Place image"
                       />
                     </Link>
@@ -57,7 +56,7 @@ function Favorites ({favList} : FavotiresProps) : JSX.Element {
                         type="button"
                       >
                         <svg
-                          className="place-card__bookmark-icon"
+                          className={`place-card__bookmark-icon ${styles.place_card__icon}`}
                           width="18"
                           height="19"
                         >

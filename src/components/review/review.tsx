@@ -1,11 +1,11 @@
 import { IReview } from '../../types/review';
 
-type ReviewProp = {
+type ReviewProps = {
   review: IReview;
 }
 
 
-function Review({review} : ReviewProp): JSX.Element {
+function Review({review} : ReviewProps): JSX.Element {
   return (
 
     <li key={review.id} className="reviews__item">

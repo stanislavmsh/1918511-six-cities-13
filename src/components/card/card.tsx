@@ -2,6 +2,7 @@ import { OffersList } from '../../types/offers-list';
 import { MouseEvent} from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
+import styles from './card.module.css';
 
 type CardProps = {
   offer: OffersList;
@@ -42,10 +43,8 @@ function Card(props: CardProps): JSX.Element {
       >
         <a href="#">
           <img
-            className="place-card__image"
+            className={`place-card__image ${styles.place_card__image}`}
             src={`${previewImage}`}
-            width="260"
-            height="200"
             alt="Place image"
           />
         </a>

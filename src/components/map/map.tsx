@@ -5,6 +5,7 @@ import { OffersList} from '../../types/offers-list';
 import { SingleOffer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
+import style from './map.module.css';
 
 type MapProps = {
   offers: OffersList[] | SingleOffer[];
@@ -24,15 +25,16 @@ const currentCustomIcon = new Icon({
 });
 
 function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
+
   const mapRef = useRef(null);
-  const map = useMap(mapRef, offers[1].city);
+  const map = useMap(mapRef, offers[0].city);
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.city.location.latitude,
-          lng: offer.city.location.longitude,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker.setIcon(
@@ -48,7 +50,7 @@ function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
     }
   }, [map, offers, selectedPoint]);
 
-  return <div style = {{height: '100%'}} ref={mapRef}></div>;
+  return <div className={style.map_iframe} ref={mapRef}></div>;
 
 }
 
