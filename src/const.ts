@@ -15,7 +15,7 @@ export const enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
-const MARKER_URL = '/public/img/';
+const MARKER_URL = '/img/';
 
 export const URL_MARKER_DEFAULT = `${MARKER_URL}pin.svg`;
 
