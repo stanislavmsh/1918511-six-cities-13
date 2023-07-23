@@ -16,3 +16,5 @@ export const sortByRating = createAction('offers/sortByRating');
 export const resetToDefault = createAction('offers/resetToDefault');
 
 export const setError = createAction<string | null>('data/error');
+
+export const setLoadingStatus = createAction<boolean>('data/loadingStatus');
