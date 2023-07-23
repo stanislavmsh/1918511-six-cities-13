@@ -15,7 +15,7 @@ function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getSortedOffers({ cityName: selectedCityName})); // узнать почему как бы уводит в мертвый луп вне хука useEffect
+    dispatch(getSortedOffers({ cityName: selectedCityName}));
   }, [dispatch, selectedCityName]);
 
   const filteredOffersByCity = useAppSelector((state) => state.sortedOffers);
