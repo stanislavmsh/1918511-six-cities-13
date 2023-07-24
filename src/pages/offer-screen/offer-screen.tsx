@@ -11,6 +11,7 @@ import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
 import axios from 'axios';
+import { IReview } from '../../types/review';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
@@ -26,6 +27,8 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
 
   const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
 
+  const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
+
   useEffect(() => {
     axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`)
       .then((response) => setCurrentOffer(response.data as SingleOffer))
@@ -34,6 +37,11 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
       });
     axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`)
       .then((response) => setNearbyOffers(response.data as OffersList[]))
+      .catch(() => {
+        throw new Error('Error kakoi to');
+      });
+    axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
+      .then((response) => setCurrentOfferComments(response.data as IReview[]))
       .catch(() => {
         throw new Error('Error kakoi to');
       });
@@ -137,7 +145,7 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
               <section className="offer__reviews reviews">
 
 
-                <Reviews reviewsNumber={1}/>
+                {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
 
                 {isCommentSectionShown && <CommentForm />}
 

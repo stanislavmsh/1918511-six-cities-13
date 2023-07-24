@@ -1,10 +1,9 @@
-import { Link , useNavigate } from 'react-router-dom';
+import { Link , Navigate } from 'react-router-dom';
 import styles from './login-screen.module.css';
 import {FormEvent , useRef} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import { AppRoute, AuthStatus } from '../../const';
-import { useEffect } from 'react';
 
 function LoginScreen(): JSX.Element {
 
@@ -13,9 +12,12 @@ function LoginScreen(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const userLoginStatus = useAppSelector((state) => state.authStatus);
+
+  if (userLoginStatus === AuthStatus.Auth) {
+    return <Navigate to={AppRoute.Root}/>; // почему не работает с useNavigate
+  }
 
   const handleSubmit = (evt : FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -26,16 +28,8 @@ function LoginScreen(): JSX.Element {
         password: passwordRef.current.value,
       })
       );
-      navigate(AppRoute.Root);
     }
   };
-
-  useEffect(() => {
-    if (userLoginStatus === AuthStatus.Auth) {
-      navigate(AppRoute.Root);
-    }
-  },[userLoginStatus, navigate]
-  );
 
 
   return (
