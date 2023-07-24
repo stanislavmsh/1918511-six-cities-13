@@ -147,7 +147,7 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
 
                 {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
 
-                {isCommentSectionShown && <CommentForm />}
+                {isCommentSectionShown && <CommentForm offerid={parsedId}/>}
 
               </section>
             </div>

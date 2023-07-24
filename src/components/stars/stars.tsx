@@ -31,7 +31,7 @@ function Stars ({onStarChange} : StarsProps) : JSX.Element {
             </label>
 
           </React.Fragment>)
-      )}
+      ).reverse()}
 
     </div>
   );

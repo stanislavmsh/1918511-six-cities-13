@@ -1,13 +1,18 @@
 import React, { useState, FormEvent } from 'react';
 import Stars from '../stars/stars';
+import axios from 'axios';
+import { BACKEND_URL } from '../../const';
+import { useParams } from 'react-router-dom';
+
+import { getToken } from '../../services/token';
 
 type CommentFormProps = {
+  comment: string;
   rating: number;
-  text: string;
 };
 
 function CommentForm(): JSX.Element {
-  const [form, setForm] = useState<CommentFormProps>({ rating: 0, text: '' });
+  const [form, setForm] = useState<CommentFormProps>({ rating: 0, comment: '' });
   const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevState) => ({
       ...prevState,
@@ -15,13 +20,24 @@ function CommentForm(): JSX.Element {
     }));
   };
   const textChangeHandler = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({ ...form, text: evt.target.value });
+    setForm({ ...form, comment: evt.target.value });
+  };
+
+  const parsedId = useParams().id;
+
+
+  const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    console.log(parsedId, form);
+    axios.post(`${BACKEND_URL}/comments/${parsedId || ''}`, form)
+      .then((response) => console.log(response.data))
+      .catch((err) => console.log(err));
+
+
   };
   return (
     <form
-      onSubmit={(evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-      }}
+      onSubmit={submitCommentHandler}
       className="reviews__form form"
       action="#"
       method="post"
@@ -48,7 +64,6 @@ function CommentForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
         >
           Submit
         </button>
