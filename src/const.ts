@@ -28,11 +28,11 @@ export const enum SortingOption {
 }
 
 export const enum APIRoute {
-  Login = '/six-cities/login',
-  Logout = '/six-cities/logout',
-  Offers = '/six-cities/offers',
-  Favorite = '/six-cities/favorite',
-  Comments = '/six-cities/comments/',
+  Login = '/login',
+  Logout = '/logout',
+  Offers = '/offers',
+  Favorite = '/favorite',
+  Comments = '/comments/',
 }
 
 const MARKER_URL = '/img/';

@@ -2,18 +2,17 @@ import { Link } from 'react-router-dom';
 import { OffersList } from '../../types/offers-list';
 import { AppRoute } from '../../const';
 import styles from './favorites.module.css';
+import { CityName } from '../../const';
 
 type FavotiresProps = {
   favList: OffersList[];
 }
 
 function Favorites ({favList} : FavotiresProps) : JSX.Element {
-  const uniqueCities = new Set(favList
-    .sort((a, b) => a.city.name.localeCompare(b.city.name))
-    .map((offer) => offer.city.name));
+  const uniqueCities = Object.values(CityName);
   return (
     <ul className="favorites__list">
-      {Array.from(uniqueCities).map((cityName) => (
+      {uniqueCities.map((cityName) => (
         <li className="favorites__locations-items" key={cityName}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">

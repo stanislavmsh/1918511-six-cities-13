@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { cityNameChange, getSortedOffers, sortByRating, sortLowToHigh, sortHighToLow, resetToDefault, getOffers, setError, setLoadingStatus} from './action';
+import { cityNameChange, getSortedOffers, sortByRating, sortLowToHigh, sortHighToLow, resetToDefault, getOffers, setError, setLoadingStatus, requireAuth} from './action';
 import { OffersList } from '../types/offers-list';
-// import { offers } from '../mocks/offers';
+import { AuthStatus } from '../const';
 
 type IinitialState = {
   city: string;
@@ -10,6 +10,7 @@ type IinitialState = {
   filteredOffers: OffersList[];
   error: string | null;
   isLoading: boolean;
+  authStatus: AuthStatus;
 }
 
 const initialState: IinitialState = {
@@ -19,6 +20,7 @@ const initialState: IinitialState = {
   filteredOffers : [],
   error: null,
   isLoading: false,
+  authStatus: AuthStatus.Unknown,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -50,6 +52,9 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setLoadingStatus, (state, action) => {
       state.isLoading = action.payload;
+    })
+    .addCase(requireAuth, (state , action) => {
+      state.authStatus = action.payload;
     });
 });
 
