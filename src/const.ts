@@ -1,5 +1,10 @@
-export const enum Setting {
-  OffersCount = 212,
+export enum CityName {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf',
 }
 
 export const enum AppRoute {
@@ -15,17 +20,23 @@ export const enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
-const MARKER_URL = '/img/';
-
-export const URL_MARKER_DEFAULT = `${MARKER_URL}pin.svg`;
-
-export const URL_MARKER_CURRENT = `${MARKER_URL}pin-active.svg`;
-
-export const CITIES_LIST = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
-
 export const enum SortingOption {
   Popular = 'Popular',
   LowToHigh = 'Price: low to high',
   HighToLow = 'Price: high to low',
   Top = 'Top rated first'
 }
+
+export const enum APIRoute {
+  Login = '/six-cities/login',
+  Logout = '/six-cities/logout',
+  Offers = '/six-cities/offers',
+  Favorite = '/six-cities/favorite',
+  Comments = '/six-cities/comments/',
+}
+
+const MARKER_URL = '/img/';
+export const URL_MARKER_CURRENT = `${MARKER_URL}pin-active.svg`;
+export const URL_MARKER_DEFAULT = `${MARKER_URL}pin.svg`;
+
+export const TIMEOUT_SHOW_ERROR = 2000;

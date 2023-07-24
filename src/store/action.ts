@@ -1,5 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
-// import { OffersList } from '../types/offers-list';
+import { OffersList } from '../types/offers-list';
+
+export const getOffers = createAction<OffersList[]>('data/getOffers');
 
 export const getSortedOffers = createAction<{ cityName: string }>('offers/getSortedOffers');
 
@@ -12,3 +14,7 @@ export const sortLowToHigh = createAction('offers/sortLowToHigh');
 export const sortByRating = createAction('offers/sortByRating');
 
 export const resetToDefault = createAction('offers/resetToDefault');
+
+export const setError = createAction<string | null>('data/error');
+
+export const setLoadingStatus = createAction<boolean>('data/loadingStatus');

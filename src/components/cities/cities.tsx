@@ -1,4 +1,4 @@
-import { CITIES_LIST } from '../../const';
+import { CityName } from '../../const';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -10,7 +10,7 @@ function CitiesList() {
 
   return (
     <ul className="locations__list tabs__list">
-      {CITIES_LIST.map((elem) => (
+      {Object.values(CityName).map((elem) => (
         <li key={elem} className="locations__item">
           <Link
             className={cn('locations__item-link tabs__item ',
