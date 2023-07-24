@@ -1,18 +1,21 @@
 import { Link , useNavigate } from 'react-router-dom';
 import styles from './login-screen.module.css';
 import {FormEvent , useRef} from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { AppRoute } from '../../const';
-
+import { AppRoute, AuthStatus } from '../../const';
+import { useEffect } from 'react';
 
 function LoginScreen(): JSX.Element {
+
 
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const userLoginStatus = useAppSelector((state) => state.authStatus);
 
   const handleSubmit = (evt : FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -26,6 +29,13 @@ function LoginScreen(): JSX.Element {
       navigate(AppRoute.Root);
     }
   };
+
+  useEffect(() => {
+    if (userLoginStatus === AuthStatus.Auth) {
+      navigate(AppRoute.Root);
+    }
+  },[userLoginStatus, navigate]
+  );
 
 
   return (

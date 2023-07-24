@@ -2,12 +2,15 @@ import Header from '../../components/header/header';
 import CommentForm from '../../components/comment-form/comment-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
+import NearbyCards from '../../components/nearby-cards/nearby-cards';
 import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
 import { useParams } from 'react-router-dom';
-import NearbyCards from '../../components/nearby-cards/nearby-cards';
 import { useAppSelector } from '../../hooks';
+import { AuthStatus, BACKEND_URL } from '../../const';
+import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
+import axios from 'axios';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
@@ -15,20 +18,27 @@ type OfferScreenProps = {
 
 function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
   const offersList = useAppSelector((state) => state.offers);
-
-  const newOffersBigList = [...offerBigList];
-  const newOffersList = [...offersList];
+  const userStatus = useAppSelector((state) => state.authStatus);
+  const isCommentSectionShown = userStatus === AuthStatus.Auth;
   const parsedId = useParams().id;
 
-  const isComponentFits = (element: SingleOffer | OffersList): boolean => element.id === parsedId;
-  // Current data for offers
-  const indexOfDetailedComponent = newOffersBigList.findIndex(isComponentFits);
-  const currentOfferArr = newOffersBigList.splice(indexOfDetailedComponent, 1);
-  const currentOffer = currentOfferArr[0];
+  const [currentOffer , setCurrentOffer] = useState<SingleOffer>(offerBigList[0]);
 
-  // data for cards
-  const indexOfRegularComponent = newOffersList.findIndex(isComponentFits);
-  newOffersList.splice(indexOfRegularComponent, 1);
+  const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
+
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`)
+      .then((response) => setCurrentOffer(response.data as SingleOffer))
+      .catch(() => {
+        throw new Error('Error kakoi to');
+      });
+    axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`)
+      .then((response) => setNearbyOffers(response.data as OffersList[]))
+      .catch(() => {
+        throw new Error('Error kakoi to');
+      });
+  },[parsedId]);
+
 
   return (
     <div className="page">
@@ -129,17 +139,17 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
 
                 <Reviews reviewsNumber={1}/>
 
-                <CommentForm />
+                {isCommentSectionShown && <CommentForm />}
 
               </section>
             </div>
           </div>
           <section className="offer__map map">
-            {newOffersList.length !== 0 && <Map offers={newOffersList} selectedPoint={undefined} />}
+            {nearbyOffers.length !== 0 && <Map offers={nearbyOffers} selectedPoint={undefined} />}
           </section>
         </section>
         <div className="container">
-          {newOffersList.length !== 0 && <NearbyCards offersList={newOffersList} onListItemHover={()=> null} />}
+          {nearbyOffers.length !== 0 && <NearbyCards offersList={nearbyOffers} onListItemHover={()=> null} />}
 
         </div>
       </main>

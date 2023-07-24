@@ -2,8 +2,8 @@ import axios, {AxiosInstance , AxiosRequestConfig, AxiosResponse, AxiosError} fr
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
 import { processErrorHandle } from './process-error-handle';
+import { BACKEND_URL } from '../const';
 
-const BACKEND_URL = 'https://13.design.pages.academy/six-cities';
 const REQUEST_TIMEOUT = 5000;
 
 type DetailMessageType = {
