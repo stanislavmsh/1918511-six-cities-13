@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import { SingleOffer } from '../../types/offer';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -9,6 +9,8 @@ import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 
 type AppProps = {
@@ -16,16 +18,17 @@ type AppProps = {
 };
 
 function App({ offerScreenMock }: AppProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.authStatus);
   const isDataLoading = useAppSelector((state) => state.isLoading);
 
-  if (isDataLoading) {
+  if (authorizationStatus === AuthStatus.Unknown || isDataLoading) {
     return (
       <LoadingScreen />
     );
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Root}
@@ -36,7 +39,7 @@ function App({ offerScreenMock }: AppProps): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authStatus={AuthStatus.Auth}>
+            <PrivateRoute authStatus={authorizationStatus}>
               <FavoritesScreen />
             </PrivateRoute>
           }
@@ -45,7 +48,7 @@ function App({ offerScreenMock }: AppProps): JSX.Element {
         <Route path={`${AppRoute.Offer}/:id`} element={<OfferScreen offerBigList={offerScreenMock}/>} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
