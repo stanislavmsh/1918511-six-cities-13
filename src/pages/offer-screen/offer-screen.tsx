@@ -5,7 +5,7 @@ import Map from '../../components/map/map';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
 import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
@@ -23,31 +23,30 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
   const isCommentSectionShown = userStatus === AuthStatus.Auth;
   const parsedId = useParams().id;
 
+  const navigate = useNavigate();
+
   const [currentOffer , setCurrentOffer] = useState<SingleOffer>(offerBigList[0]);
-
   const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
-
   const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
 
+
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`)
-      .then((response) => setCurrentOffer(response.data as SingleOffer))
+    const endpoints = [
+      axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`),
+      axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`),
+      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
+    ];
+    axios.all(endpoints).then(axios.spread((...responses) => {
+      setCurrentOffer(responses[0].data as SingleOffer);
+      setNearbyOffers(responses[1].data as OffersList[]);
+      setCurrentOfferComments(responses[2].data as IReview[]);
+    }))
       .catch(() => {
-        throw new Error('Error kakoi to');
+        navigate('/404');
       });
-    axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`)
-      .then((response) => setNearbyOffers(response.data as OffersList[]))
-      .catch(() => {
-        throw new Error('Error kakoi to');
-      });
-    axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
-      .then((response) => setCurrentOfferComments(response.data as IReview[]))
-      .catch(() => {
-        throw new Error('Error kakoi to');
-      });
-  },[parsedId]);
+  },[ navigate, parsedId]);
 
-
+  const nearbyThree = nearbyOffers.slice(0, 3);
   return (
     <div className="page">
       <Header />
@@ -147,17 +146,17 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
 
                 {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
 
-                {isCommentSectionShown && <CommentForm />}
+                {isCommentSectionShown && <CommentForm setCurrentOfferComments={setCurrentOfferComments}/>}
 
               </section>
             </div>
           </div>
           <section className="offer__map map">
-            {nearbyOffers.length !== 0 && <Map offers={nearbyOffers} selectedPoint={undefined} />}
+            {nearbyOffers.length !== 0 && <Map offers={nearbyThree} selectedPoint={undefined} />}
           </section>
         </section>
         <div className="container">
-          {nearbyOffers.length !== 0 && <NearbyCards offersList={nearbyOffers} onListItemHover={()=> null} />}
+          {nearbyOffers.length !== 0 && <NearbyCards offersList={nearbyThree} onListItemHover={()=> null} />}
 
         </div>
       </main>

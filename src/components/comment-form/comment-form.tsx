@@ -3,15 +3,20 @@ import Stars from '../stars/stars';
 import axios from 'axios';
 import { BACKEND_URL } from '../../const';
 import { useParams } from 'react-router-dom';
-
 import { getToken } from '../../services/token';
+import { IReview } from '../../types/review';
+
 
 type CommentFormProps = {
-  comment: string;
   rating: number;
+  comment: string;
 };
 
-function CommentForm(): JSX.Element {
+type setNewCommentsProps = {
+  setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
+}
+
+function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Element {
   const [form, setForm] = useState<CommentFormProps>({ rating: 0, comment: '' });
   const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevState) => ({
@@ -24,23 +29,46 @@ function CommentForm(): JSX.Element {
   };
 
   const parsedId = useParams().id;
+  const token = getToken();
+  const isCommentSubmitDisabled = form.comment.length < 50;
 
 
   const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    console.log(parsedId, form);
-    axios.post(`${BACKEND_URL}/comments/${parsedId || ''}`, form)
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err));
+    axios.post<IReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
+      headers: {
+        'x-token': token
+      }
+    })
+      .then(({data}) => {
+        setCurrentOfferComments((oldComments) => {
+          if (oldComments) {
+            return [...oldComments, data];
+          }
+          return [data];
+        }
+        );
+        setForm({
+          comment: '',
+          rating: 0
+        });
+      }
+      )
+      .catch(() => {
+        throw new Error('Comment Sending Error');
+      }
+      );
 
 
   };
+
   return (
     <form
       onSubmit={submitCommentHandler}
       className="reviews__form form"
       action="#"
       method="post"
+
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
@@ -49,7 +77,9 @@ function CommentForm(): JSX.Element {
       <Stars onStarChange={onStarChangeHandler}/>
 
       <textarea
+        maxLength={300}
         onChange={textChangeHandler}
+        value={form.comment}
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
@@ -64,6 +94,7 @@ function CommentForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
+          disabled = {isCommentSubmitDisabled}
         >
           Submit
         </button>
