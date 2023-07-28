@@ -46,6 +46,10 @@ function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
 
       return () => {
         map.removeLayer(markerLayer);
+        map.flyTo([
+          offers[1].city.location.latitude,
+          offers[1].city.location.longitude,
+        ]);
       };
     }
   }, [map, offers, selectedPoint]);

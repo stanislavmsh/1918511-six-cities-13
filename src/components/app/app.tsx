@@ -9,7 +9,7 @@ import OfferScreen from '../../pages/offer-screen/offer-screen';
 import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-route/history-router';
 import browserHistory from '../../browser-history';
 
 

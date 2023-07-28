@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { OffersList } from '../types/offers-list';
-import { AuthStatus } from '../const';
+import { AuthStatus , AppRoute } from '../const';
 
 export const getOffers = createAction<OffersList[]>('data/getOffers');
 
@@ -21,3 +21,5 @@ export const setError = createAction<string | null>('data/error');
 export const setLoadingStatus = createAction<boolean>('data/loadingStatus');
 
 export const requireAuth = createAction<AuthStatus>('user/requireAuth');
+
+export const redirectToRoute = createAction<AppRoute>('offers/redirectToRoute');

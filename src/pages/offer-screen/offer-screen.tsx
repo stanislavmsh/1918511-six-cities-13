@@ -2,12 +2,16 @@ import Header from '../../components/header/header';
 import CommentForm from '../../components/comment-form/comment-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
+import NearbyCards from '../../components/nearby-cards/nearby-cards';
 import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
-import { useParams } from 'react-router-dom';
-import NearbyCards from '../../components/nearby-cards/nearby-cards';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { AuthStatus, BACKEND_URL } from '../../const';
+import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
+import axios from 'axios';
+import { IReview } from '../../types/review';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
@@ -15,21 +19,34 @@ type OfferScreenProps = {
 
 function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
   const offersList = useAppSelector((state) => state.offers);
-
-  const newOffersBigList = [...offerBigList];
-  const newOffersList = [...offersList];
+  const userStatus = useAppSelector((state) => state.authStatus);
+  const isCommentSectionShown = userStatus === AuthStatus.Auth;
   const parsedId = useParams().id;
 
-  const isComponentFits = (element: SingleOffer | OffersList): boolean => element.id === parsedId;
-  // Current data for offers
-  const indexOfDetailedComponent = newOffersBigList.findIndex(isComponentFits);
-  const currentOfferArr = newOffersBigList.splice(indexOfDetailedComponent, 1);
-  const currentOffer = currentOfferArr[0];
+  const navigate = useNavigate();
 
-  // data for cards
-  const indexOfRegularComponent = newOffersList.findIndex(isComponentFits);
-  newOffersList.splice(indexOfRegularComponent, 1);
+  const [currentOffer , setCurrentOffer] = useState<SingleOffer>(offerBigList[0]);
+  const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
+  const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
 
+
+  useEffect(() => {
+    const endpoints = [
+      axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`),
+      axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`),
+      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
+    ];
+    axios.all(endpoints).then(axios.spread((...responses) => {
+      setCurrentOffer(responses[0].data as SingleOffer);
+      setNearbyOffers(responses[1].data as OffersList[]);
+      setCurrentOfferComments(responses[2].data as IReview[]);
+    }))
+      .catch(() => {
+        navigate('/404');
+      });
+  },[ navigate, parsedId]);
+
+  const nearbyThree = nearbyOffers.slice(0, 3);
   return (
     <div className="page">
       <Header />
@@ -127,19 +144,19 @@ function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
               <section className="offer__reviews reviews">
 
 
-                <Reviews reviewsNumber={1}/>
+                {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
 
-                <CommentForm />
+                {isCommentSectionShown && <CommentForm setCurrentOfferComments={setCurrentOfferComments}/>}
 
               </section>
             </div>
           </div>
           <section className="offer__map map">
-            {newOffersList.length !== 0 && <Map offers={newOffersList} selectedPoint={undefined} />}
+            {nearbyOffers.length !== 0 && <Map offers={nearbyThree} selectedPoint={undefined} />}
           </section>
         </section>
         <div className="container">
-          {newOffersList.length !== 0 && <NearbyCards offersList={newOffersList} onListItemHover={()=> null} />}
+          {nearbyOffers.length !== 0 && <NearbyCards offersList={nearbyThree} onListItemHover={()=> null} />}
 
         </div>
       </main>
