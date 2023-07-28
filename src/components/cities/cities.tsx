@@ -2,7 +2,7 @@ import { CityName } from '../../const';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { cityNameChange } from '../../store/action';
+import { cityNameChange, getSortedOffers } from '../../store/action';
 
 function CitiesList() {
   const selectedCity = useAppSelector((state) => state.city);
@@ -18,6 +18,7 @@ function CitiesList() {
             to="/"
             onClick={() => {
               dispatch(cityNameChange({city : elem}));
+              dispatch(getSortedOffers({cityName: elem}));
             }}
           >
             <span>{elem}</span>
