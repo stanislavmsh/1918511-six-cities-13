@@ -5,9 +5,9 @@ import ErrorMessage from './components/error-message/error-message';
 import { offerScreenMock } from './mocks/offer-screen-mock';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { fetchOffersAction } from './store/api-actions';
+import { fetchOffersAction } from './store/offers-data/offers-data.action';
 import { CityName } from './const';
-import { checkAuthAction } from './store/api-actions';
+import { checkAuthAction } from './store/user-process/user-process.action';
 
 store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction(CityName.Paris));

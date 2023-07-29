@@ -2,10 +2,12 @@ import { CityName } from '../../const';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { cityNameChange, getSortedOffers } from '../../store/action';
+// import { cityNameChange, getSortedOffers } from '../../store/action';
+import { getCityName } from '../../store/offers-data/offers-data.selectors';
+import { cityNameChange, sortOffersByCity } from '../../store/offers-data/offers-data.slice';
 
 function CitiesList() {
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector(getCityName);
   const dispatch = useAppDispatch();
 
   return (
@@ -17,8 +19,8 @@ function CitiesList() {
               {'tabs__item--active': selectedCity === elem})}
             to="/"
             onClick={() => {
-              dispatch(cityNameChange({city : elem}));
-              dispatch(getSortedOffers({cityName: elem}));
+              dispatch(cityNameChange(elem));
+              dispatch(sortOffersByCity(elem));
             }}
           >
             <span>{elem}</span>

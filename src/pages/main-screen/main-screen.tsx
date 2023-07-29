@@ -1,24 +1,25 @@
 import { OffersList } from '../../types/offers-list';
 import { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { getSortedOffers } from '../../store/action';
 import CitiesList from '../../components/cities/cities';
 import Header from '../../components/header/header';
 import Cards from '../../components/cards/cards';
 import Map from '../../components/map/map';
 import SortingOptions from '../../components/sorting-options/sorting-options';
+import { getCityName, getSortedOffers } from '../../store/offers-data/offers-data.selectors';
+import { sortOffersByCity } from '../../store/offers-data/offers-data.slice';
 
 
 function MainScreen(): JSX.Element {
   const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
-  const selectedCityName = useAppSelector((state) => state.city);
+  const selectedCityName = useAppSelector(getCityName);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getSortedOffers({ cityName: selectedCityName}));
+    dispatch(sortOffersByCity(selectedCityName));
   }, [dispatch, selectedCityName]);
 
-  const filteredOffersByCity = useAppSelector((state) => state.sortedOffers);
+  const filteredOffersByCity = useAppSelector(getSortedOffers);
 
   const handleListItemHover = (listItemId: string) => {
     const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);

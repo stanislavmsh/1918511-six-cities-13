@@ -2,8 +2,9 @@ import { Link , Navigate } from 'react-router-dom';
 import styles from './login-screen.module.css';
 import {FormEvent , useRef} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loginAction } from '../../store/api-actions';
-import { AppRoute, AuthStatus } from '../../const';
+import { loginAction } from '../../store/user-process/user-process.action';
+import { AppRoute } from '../../const';
+import { getAuthCheckedStatus } from '../../store/user-process/user-process.selectors';
 
 function LoginScreen(): JSX.Element {
 
@@ -13,9 +14,9 @@ function LoginScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const userLoginStatus = useAppSelector((state) => state.authStatus);
+  const userLoginStatus = useAppSelector(getAuthCheckedStatus);
 
-  if (userLoginStatus === AuthStatus.Auth) {
+  if (userLoginStatus) {
     return <Navigate to={AppRoute.Root}/>; // почему не работает с useNavigate
   }
 

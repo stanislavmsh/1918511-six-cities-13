@@ -3,7 +3,8 @@ import { SortingOption } from '../../const';
 import styles from './sorting-options.module.css';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
-import { resetToDefault, sortByRating, sortHighToLow, sortLowToHigh } from '../../store/action';
+// import { resetToDefault, sortByRating, sortHighToLow, sortLowToHigh } from '../../store/action';
+import { sortOffers } from '../../store/offers-data/offers-data.slice';
 
 function SortingOptions() : JSX.Element {
   const [isOpened, setIsOpened] = useState<boolean>(false);
@@ -19,26 +20,6 @@ function SortingOptions() : JSX.Element {
   };
 
   const dispatch = useDispatch();
-
-  const handleSortHighToLow = () => {
-    handleOptionClick(SortingOption.HighToLow);
-    dispatch(sortHighToLow());
-  };
-
-  const handleSortLowToHigh = () => {
-    handleOptionClick(SortingOption.LowToHigh);
-    dispatch(sortLowToHigh());
-  };
-
-  const resetDefault = () => {
-    handleOptionClick(SortingOption.Popular);
-    dispatch(resetToDefault());
-  };
-
-  const handleDortByRating = () => {
-    handleOptionClick(SortingOption.Top);
-    dispatch(sortByRating());
-  };
 
   return (
     <form className="places__sorting" action="#" method="get">
@@ -57,39 +38,21 @@ function SortingOptions() : JSX.Element {
           {'places__options--opened' : isOpened}
         )}
       >
-        <li
-          className={cn('places__option',
-            {'places__option--active' : selectedSort === SortingOption.Popular}
-          )}
-          tabIndex={0}
-          onClick={resetDefault}
-        >
-          {SortingOption.Popular}
-        </li>
-        <li className={cn('places__option',
-          {'places__option--active' : selectedSort === SortingOption.LowToHigh}
-        )}
-        tabIndex={0}
-        onClick={handleSortLowToHigh }
-        >
-          {SortingOption.LowToHigh}
-        </li>
-        <li className={cn('places__option',
-          {'places__option--active' : selectedSort === SortingOption.HighToLow}
-        )}
-        tabIndex={0}
-        onClick={handleSortHighToLow}
-        >
-          {SortingOption.HighToLow}
-        </li>
-        <li className={cn('places__option',
-          {'places__option--active' : selectedSort === SortingOption.Top}
-        )}
-        tabIndex={0}
-        onClick={handleDortByRating}
-        >
-          {SortingOption.Top}
-        </li>
+        {Object.values(SortingOption).map((elem) => (
+          <li
+            key={`${elem}=xxxoptionxxx`}
+            className={cn('places__option',
+              {'places__option--active' : selectedSort === elem}
+            )}
+            tabIndex={0}
+            onClick={() => {
+              handleOptionClick(elem);
+              dispatch(sortOffers(elem));
+            }}
+          >
+            {elem}
+          </li>
+        ))}
       </ul>
     </form>
   );

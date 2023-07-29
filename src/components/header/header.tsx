@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 import styles from './header.module.css';
-import { AppRoute, AuthStatus } from '../../const';
+import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { logoutAction } from '../../store/api-actions';
+import { logoutAction } from '../../store/user-process/user-process.action';
+import { getAuthCheckedStatus } from '../../store/user-process/user-process.selectors';
 
 function Header(): JSX.Element {
-  const userStatus = useAppSelector((state) => state.authStatus);
+  // const userStatus = useAppSelector((state) => state.authStatus);
   const dispatch = useAppDispatch();
 
-  const isLoggedIn = userStatus === AuthStatus.Auth;
+  const isLoggedIn = useAppSelector(getAuthCheckedStatus);
 
   const handleLogout = () => {
     if(isLoggedIn) {

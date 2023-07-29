@@ -7,20 +7,22 @@ import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { AuthStatus, BACKEND_URL } from '../../const';
+import { BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
 import axios from 'axios';
 import { IReview } from '../../types/review';
+import { getOffers } from '../../store/offers-data/offers-data.selectors';
+import { getAuthCheckedStatus } from '../../store/user-process/user-process.selectors';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
 }
 
 function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
-  const offersList = useAppSelector((state) => state.offers);
-  const userStatus = useAppSelector((state) => state.authStatus);
-  const isCommentSectionShown = userStatus === AuthStatus.Auth;
+  const offersList = useAppSelector(getOffers);
+  // const userStatus = useAppSelector(getAuthStatus);
+  const isCommentSectionShown = useAppSelector(getAuthCheckedStatus);
   const parsedId = useParams().id;
 
   const navigate = useNavigate();

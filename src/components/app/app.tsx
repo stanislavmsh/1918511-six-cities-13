@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthStatus } from '../../const';
+import { AppRoute } from '../../const';
 import { SingleOffer } from '../../types/offer';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
@@ -11,6 +11,9 @@ import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-router';
 import browserHistory from '../../browser-history';
+import { getAuthCheckedStatus, getAuthStatus } from '../../store/user-process/user-process.selectors';
+import { getErrorStatus, getLoadingStatus } from '../../store/offers-data/offers-data.selectors';
+import ErrorScreen from '../../pages/error-screen/error-screen';
 
 
 type AppProps = {
@@ -18,12 +21,20 @@ type AppProps = {
 };
 
 function App({ offerScreenMock }: AppProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authStatus);
-  const isDataLoading = useAppSelector((state) => state.isLoading);
+  const authorizationStatus = useAppSelector(getAuthStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isDataLoading = useAppSelector(getLoadingStatus);
+  const hasError = useAppSelector(getErrorStatus);
 
-  if (authorizationStatus === AuthStatus.Unknown || isDataLoading) {
+  if (!isAuthChecked || isDataLoading) {
     return (
       <LoadingScreen />
+    );
+  }
+
+  if(hasError) {
+    return (
+      <ErrorScreen />
     );
   }
 
