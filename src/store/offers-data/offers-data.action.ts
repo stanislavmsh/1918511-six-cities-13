@@ -8,6 +8,7 @@ import { TIMEOUT_SHOW_ERROR } from '../../const';
 import { setError } from '../action';
 import { store } from '..';
 
+
 export const fetchOffersAction = createAsyncThunk<{data : OffersList[]; city: CityName}, CityName, {
   dispatch: AppDispatch;
   state: State;

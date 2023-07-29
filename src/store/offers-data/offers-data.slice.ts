@@ -13,7 +13,6 @@ const initialState: OffersData = {
   filteredOffers: [],
   hasError: false,
 };
-
 export const offersData = createSlice({
   name: NameSpace.Offers,
   initialState,
@@ -68,4 +67,3 @@ export const offersData = createSlice({
 
 
 export const {sortOffersByCity, cityNameChange, sortOffers } = offersData.actions;
-export default offersData.reducer;
