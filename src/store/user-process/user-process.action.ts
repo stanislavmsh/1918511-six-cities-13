@@ -6,7 +6,6 @@ import { redirectToRoute } from '.././action';
 import {AuthData} from '../../types/auth-data';
 import {UserData} from '../../types/user-data';
 import { dropToken, saveToken } from '../../services/token';
-// import { sortOffersByCity , getOffersToState } from './offers-data/offers-data.slice';
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

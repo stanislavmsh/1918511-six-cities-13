@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../const';
+import { NameSpace , SortingOption} from '../../const';
 import { OffersData } from '../../types/state';
 import { fetchOffersAction } from './offers-data.action';
 // import { OffersList } from '../../types/offers-list';
-import { SortingOption } from '../../const';
 
 const initialState: OffersData = {
   cityName: 'Paris',
@@ -17,9 +16,6 @@ export const offersData = createSlice({
   name: NameSpace.Offers,
   initialState,
   reducers:{
-    // getOffersToState: (state, action: PayloadAction<OffersList[]>) => {
-    //   state.offers = action.payload;
-    // },
     sortOffersByCity: (state, action: PayloadAction<string>) => {
       state.sortedOffers = state.offers.filter((elem) => elem.city.name === action.payload);
       state.filteredOffers = state.sortedOffers;
@@ -40,25 +36,28 @@ export const offersData = createSlice({
           break;
         default:
           state.sortedOffers = state.filteredOffers;
+          break;
       }
       state.cityName = action.payload;
-    }
+    },
 
   },
-  extraReducers(builder) {
+  extraReducers:(builder) => {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersDataLoading = true;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload.data;
+        state.isOffersDataLoading = false;
         state.cityName = action.payload.city;
         state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
         state.filteredOffers = state.sortedOffers;
-        state.isOffersDataLoading = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
+        state.cityName = 'Paris';
+        state.offers = [];
         state.hasError = true;
       });
 
@@ -66,4 +65,4 @@ export const offersData = createSlice({
 });
 
 
-export const {sortOffersByCity, cityNameChange, sortOffers } = offersData.actions;
+export const { sortOffersByCity, cityNameChange, sortOffers } = offersData.actions;
