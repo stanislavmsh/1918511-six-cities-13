@@ -42,7 +42,7 @@ export const offersData = createSlice({
     },
 
   },
-  extraReducers:(builder) => {
+  extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersDataLoading = true;

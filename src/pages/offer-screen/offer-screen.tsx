@@ -7,13 +7,13 @@ import { SingleOffer } from '../../types/offer';
 import { OffersList } from '../../types/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { BACKEND_URL } from '../../const';
+import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
 import axios from 'axios';
 import { IReview } from '../../types/review';
 import { getOffers } from '../../store/offers-data/offers-data.selectors';
-import { getAuthCheckedStatus } from '../../store/user-process/user-process.selectors';
+import { getAuthStatus } from '../../store/user-process/user-process.selectors';
 
 type OfferScreenProps = {
   offerBigList: SingleOffer[];
@@ -21,8 +21,8 @@ type OfferScreenProps = {
 
 function OfferScreen({offerBigList}: OfferScreenProps): JSX.Element {
   const offersList = useAppSelector(getOffers);
-  // const userStatus = useAppSelector(getAuthStatus);
-  const isCommentSectionShown = useAppSelector(getAuthCheckedStatus);
+  const userStatus = useAppSelector(getAuthStatus);
+  const isCommentSectionShown = userStatus === AuthStatus.Auth;
   const parsedId = useParams().id;
 
   const navigate = useNavigate();

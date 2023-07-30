@@ -1,3 +1,4 @@
+import { CityName } from '../../const';
 import {useAppDispatch} from '../../hooks';
 import { fetchOffersAction } from '../../store/offers-data/offers-data.action';
 
@@ -6,10 +7,10 @@ function ErrorScreen(): JSX.Element {
 
   return (
     <>
-      <p className="error__text">Не удалось загрузить вопросы</p>
+      <p className="error__text">Не удалось загрузить</p>
       <button
         onClick={() => {
-          dispatch(fetchOffersAction(Paris));
+          dispatch(fetchOffersAction(CityName.Paris));
         }}
         className="replay replay--error"
         type="button"
