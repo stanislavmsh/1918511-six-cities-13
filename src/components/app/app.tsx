@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { SingleOffer } from '../../types/offer';
 import MainScreen from '../../pages/main-screen/main-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
@@ -16,11 +15,7 @@ import { getErrorStatus, getLoadingStatus } from '../../store/offers-data/offers
 import ErrorScreen from '../../pages/error-screen/error-screen';
 
 
-type AppProps = {
-  offerScreenMock: SingleOffer[];
-};
-
-function App({ offerScreenMock }: AppProps): JSX.Element {
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isDataLoading = useAppSelector(getLoadingStatus);
@@ -56,7 +51,7 @@ function App({ offerScreenMock }: AppProps): JSX.Element {
           }
         />
         <Route path={AppRoute.Login} element={<LoginScreen />} />
-        <Route path={`${AppRoute.Offer}/:id`} element={<OfferScreen offerBigList={offerScreenMock}/>} />
+        <Route path={`${AppRoute.Offer}/:id`} element={<OfferScreen/>} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </HistoryRouter>

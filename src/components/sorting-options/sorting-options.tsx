@@ -3,7 +3,6 @@ import { SortingOption } from '../../const';
 import styles from './sorting-options.module.css';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
-// import { resetToDefault, sortByRating, sortHighToLow, sortLowToHigh } from '../../store/action';
 import { sortOffers } from '../../store/offers-data/offers-data.slice';
 
 function SortingOptions() : JSX.Element {

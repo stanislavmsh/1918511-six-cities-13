@@ -11,7 +11,6 @@ export type OffersData = {
   offers: OffersList[];
   isOffersDataLoading: boolean;
   sortedOffers: OffersList[];
-  filteredOffers: OffersList[];
   hasError: boolean;
 }
 

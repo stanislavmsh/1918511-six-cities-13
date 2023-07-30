@@ -13,7 +13,7 @@ function CitiesList() {
   return (
     <ul className="locations__list tabs__list">
       {Object.values(CityName).map((elem) => (
-        <li key={elem} className="locations__item">
+        <li key={`${elem}city`} className="locations__item">
           <Link
             className={cn('locations__item-link tabs__item ',
               {'tabs__item--active': selectedCity === elem})}

@@ -1,65 +1,25 @@
-import React, { useState, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import Stars from '../stars/stars';
-import axios from 'axios';
-import { BACKEND_URL } from '../../const';
 import { useParams } from 'react-router-dom';
 import { getToken } from '../../services/token';
 import { IReview } from '../../types/review';
 
-
-type CommentFormProps = {
-  rating: number;
-  comment: string;
-};
+import useCommentSubmission from '../../hooks/use-comments';
 
 type setNewCommentsProps = {
   setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
 }
 
 function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Element {
-  const [form, setForm] = useState<CommentFormProps>({ rating: 0, comment: '' });
-  const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevState) => ({
-      ...prevState,
-      rating: Number(evt.target.value),
-    }));
-  };
-  const textChangeHandler = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({ ...form, comment: evt.target.value });
-  };
-
-  const parsedId = useParams().id;
+  const parsedId = useParams().id || '';
   const token = getToken();
-  const isCommentSubmitDisabled = form.comment.length < 50;
 
+  const {form , onStarChangeHandler , textChangeHandler , submitComment} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
+  const isCommentSubmitDisabled = form.comment.length < 50;
 
   const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    axios.post<IReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
-      headers: {
-        'x-token': token
-      }
-    })
-      .then(({data}) => {
-        setCurrentOfferComments((oldComments) => {
-          if (oldComments) {
-            return [...oldComments, data];
-          }
-          return [data];
-        }
-        );
-        setForm({
-          comment: '',
-          rating: 0
-        });
-      }
-      )
-      .catch(() => {
-        throw new Error('Comment Sending Error');
-      }
-      );
-
-
+    submitComment();
   };
 
   return (

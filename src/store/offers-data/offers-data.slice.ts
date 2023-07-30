@@ -9,7 +9,6 @@ const initialState: OffersData = {
   offers: [],
   isOffersDataLoading: false,
   sortedOffers: [],
-  filteredOffers: [],
   hasError: false,
 };
 export const offersData = createSlice({
@@ -18,12 +17,11 @@ export const offersData = createSlice({
   reducers:{
     sortOffersByCity: (state, action: PayloadAction<string>) => {
       state.sortedOffers = state.offers.filter((elem) => elem.city.name === action.payload);
-      state.filteredOffers = state.sortedOffers;
     },
     cityNameChange: (state, action: PayloadAction<string>) => {
       state.cityName = action.payload;
     },
-    sortOffers: (state, action: PayloadAction<string>) => {
+    sortOffers: (state, action: PayloadAction<SortingOption>) => {
       switch (action.payload) {
         case SortingOption.LowToHigh:
           state.sortedOffers.sort((a, b) => a.price - b.price);
@@ -35,10 +33,9 @@ export const offersData = createSlice({
           state.sortedOffers.sort((a, b) => b.rating - a.rating);
           break;
         default:
-          state.sortedOffers = state.filteredOffers;
+          state.sortedOffers = state.offers.filter((elem) => elem.city.name === state.cityName);
           break;
       }
-      state.cityName = action.payload;
     },
 
   },
@@ -52,7 +49,6 @@ export const offersData = createSlice({
         state.isOffersDataLoading = false;
         state.cityName = action.payload.city;
         state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
-        state.filteredOffers = state.sortedOffers;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
