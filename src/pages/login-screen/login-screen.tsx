@@ -17,7 +17,7 @@ function LoginScreen(): JSX.Element {
   const userLoginStatus = useAppSelector(getAuthStatus);
 
   if (userLoginStatus === AuthStatus.Auth) {
-    return <Navigate to={AppRoute.Root}/>; // почему не работает с useNavigate
+    return <Navigate to={AppRoute.Root}/>;
   }
 
   const handleSubmit = (evt : FormEvent<HTMLFormElement>) => {

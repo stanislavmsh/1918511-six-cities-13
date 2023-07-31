@@ -24,7 +24,6 @@ function Card(props: CardProps): JSX.Element {
       id = {id}
       onMouseEnter={handleCardItemHover}
       key={id}
-      // className="cities__card place-card"
       className={cn('place-card',
         {'cities__card': isOfferPage},
         {'near-places__card' : !isOfferPage}
@@ -35,7 +34,6 @@ function Card(props: CardProps): JSX.Element {
         <span>Premium</span>
       </div>}
       <div
-      //  className="cities__image-wrapper place-card__image-wrapper"
         className={cn('place-card__image-wrapper',
           {'cities__image-wrapper': isOfferPage},
           {'near-places__image-wrapper': !isOfferPage}

@@ -25,7 +25,6 @@ const currentCustomIcon = new Icon({
 });
 
 function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
-
   const mapRef = useRef(null);
   const map = useMap(mapRef, offers[0].city);
   useEffect(() => {
@@ -44,18 +43,18 @@ function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
         )
           .addTo(markerLayer);
       });
+      map.flyTo([
+        offers[0].city.location.latitude,
+        offers[0].city.location.longitude,
+      ],
+      offers[0].city.location.zoom
+      );
 
       return () => {
         map.removeLayer(markerLayer);
-        map.flyTo([
-          offers[0].city.location.latitude,
-          offers[0].city.location.longitude,
-        ],
-        offers[0].city.location.zoom
-        );
       };
     }
-  }, [map, offers, selectedPoint]);
+  }, [map, selectedPoint, offers]);
 
   return <div className={style.map_iframe} ref={mapRef}></div>;
 

@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace , SortingOption} from '../../const';
 import { OffersData } from '../../types/state';
 import { fetchOffersAction } from './offers-data.action';
-// import { OffersList } from '../../types/offers-list';
 
 const initialState: OffersData = {
   cityName: 'Paris',

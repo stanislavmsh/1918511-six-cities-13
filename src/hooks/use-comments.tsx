@@ -30,7 +30,6 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useC
   };
 
   const submitComment = () => {
-    // evt.preventDefault();
     axios.post<IReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
       headers: {
         'x-token': token

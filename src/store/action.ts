@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-// import { OffersList } from '../types/offers-list';
 import { AppRoute } from '../const';
 
 
