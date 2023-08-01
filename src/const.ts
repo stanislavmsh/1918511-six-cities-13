@@ -20,7 +20,7 @@ export const enum AuthStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const enum SortingOption {
+export enum SortingOption {
   Popular = 'Popular',
   LowToHigh = 'Price: low to high',
   HighToLow = 'Price: high to low',
@@ -33,6 +33,11 @@ export const enum APIRoute {
   Offers = '/offers',
   Favorite = '/favorite',
   Comments = '/comments/',
+}
+
+export const enum NameSpace {
+  Offers = 'OFFERS',
+  User = 'USER',
 }
 
 const MARKER_URL = '/img/';

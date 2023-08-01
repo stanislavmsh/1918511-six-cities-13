@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
-import ErrorMessage from './components/error-message/error-message';
-import { offerScreenMock } from './mocks/offer-screen-mock';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { fetchOffersAction } from './store/api-actions';
+import { fetchOffersAction } from './store/offers-data/offers-data.action';
 import { CityName } from './const';
-import { checkAuthAction } from './store/api-actions';
+import { checkAuthAction } from './store/user-process/user-process.action';
 
 store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction(CityName.Paris));
@@ -19,10 +19,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ErrorMessage />
-      <App
-        offerScreenMock = {offerScreenMock}
-      />
+      <ToastContainer />
+      <App />
     </Provider>
   </React.StrictMode>
 );

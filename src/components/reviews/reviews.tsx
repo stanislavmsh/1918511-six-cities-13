@@ -1,7 +1,5 @@
 import Review from '../review/review';
 import React from 'react';
-
-// import { reviews } from '../../mocks/review';
 import { IReview } from '../../types/review';
 
 type ReviewsProps = {

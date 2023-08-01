@@ -1,4 +1,3 @@
-// import NearbyCard from '../nearby-card/nearby-card';
 import Card from '../card/card';
 import { OffersList } from '../../types/offers-list';
 
