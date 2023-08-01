@@ -29,7 +29,7 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
   const status = favoriteStatus ? 0 : 1;
   const token = getToken();
 
-  const handleFavClick = () => {
+  const favClick = () => {
     if (!isUserAuth) {
       return navigate(AppRoute.Login);
     }
@@ -49,7 +49,7 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
       });
   };
 
-  return { favoriteStatus, handleFavClick };
+  return { favoriteStatus, favClick };
 };
 
 export default useFavoriteStatus;

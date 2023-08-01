@@ -56,7 +56,7 @@ function OfferScreen(): JSX.Element {
   },[ navigate, parsedId]);
 
 
-  const {favoriteStatus, handleFavClick} = useFavoriteStatus({ id, isFavorite});
+  const {favoriteStatus, favClick} = useFavoriteStatus({ id, isFavorite});
 
 
   return (
@@ -93,7 +93,7 @@ function OfferScreen(): JSX.Element {
                   {'offer__bookmark-button--active' : favoriteStatus}
                 )}
                 type="button"
-                onClick={handleFavClick}
+                onClick={favClick}
                 >
                   <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>

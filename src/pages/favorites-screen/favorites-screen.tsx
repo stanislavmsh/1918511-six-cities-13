@@ -2,11 +2,11 @@ import Header from '../../components/header/header';
 import Favorites from '../../components/favorites/favorites';
 import { useAppSelector } from '../../hooks';
 import styles from './favorites-screen.module.css';
-import { getOffers } from '../../store/offers-data/offers-data.selectors';
+import { getFavorites } from '../../store/offers-data/offers-data.selectors';
 
 function FavoritesScreen(): JSX.Element {
-  const favList = useAppSelector(getOffers);
-
+  const favList = useAppSelector(getFavorites);
+  console.log(favList, 'kekScreen');
   return (
     <div className="page">
       <Header />

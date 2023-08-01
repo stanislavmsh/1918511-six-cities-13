@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace , SortingOption} from '../../const';
 import { OffersData } from '../../types/state';
-import { fetchOffersAction } from './offers-data.action';
+import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 // import { OffersList } from '../../types/offers-list';
 
 
@@ -11,7 +11,7 @@ const initialState: OffersData = {
   isOffersDataLoading: false,
   sortedOffers: [],
   hasError: false,
-  // favouriteStatus: false,
+  favorites: [],
 };
 export const offersData = createSlice({
   name: NameSpace.Offers,
@@ -68,13 +68,18 @@ export const offersData = createSlice({
         state.cityName = action.payload.city;
         state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
       })
+      .addCase(fetchFavAction.fulfilled , (state, action) => {
+        state.favorites = action.payload;
+      })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
         state.cityName = 'Paris';
         state.offers = [];
         state.hasError = true;
+      })
+      .addCase(fetchFavAction.rejected, (state) => {
+        state.favorites = [];
       });
-
   }
 });
 

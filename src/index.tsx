@@ -5,12 +5,13 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { fetchOffersAction } from './store/offers-data/offers-data.action';
+import { fetchFavAction, fetchOffersAction } from './store/offers-data/offers-data.action';
 import { CityName } from './const';
 import { checkAuthAction } from './store/user-process/user-process.action';
 
 store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction(CityName.Paris));
+store.dispatch(fetchFavAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

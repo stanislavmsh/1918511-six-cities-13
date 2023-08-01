@@ -4,14 +4,15 @@ import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/user-process/user-process.action';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
-// import { fetchOffersAction } from '../../store/offers-data/offers-data.action';
-// import { getCityName } from '../../store/offers-data/offers-data.selectors';
-// import { CityName } from '../../const';
+import { getOffers } from '../../store/offers-data/offers-data.selectors';
+
 
 function Header(): JSX.Element {
   const userStatus = useAppSelector(getAuthStatus);
   const dispatch = useAppDispatch();
+  const offers = useAppSelector(getOffers);
 
+  const favList = offers.reduce((acc, elem) => (elem.isFavorite ? (acc = acc + 1) : acc), 0);
   const isLoggedIn = userStatus === AuthStatus.Auth;
 
   const handleLogout = () => {
@@ -19,20 +20,6 @@ function Header(): JSX.Element {
       dispatch(logoutAction());
     }
   };
-
-
-  // Бред
-  // const stringToEnum = (name: string): CityName | undefined => Object.values(CityName).find((city) => city === name);
-
-  // const currentCityName = useAppSelector(getCityName);
-  // const currentCityNameEnum = stringToEnum(currentCityName);
-  // const handleLogoClick = () => {
-  //   if(currentCityNameEnum){
-  //     dispatch(fetchOffersAction(currentCityNameEnum));
-  //   }
-
-  // };
-
 
   return (
     <header className="header">
@@ -42,7 +29,6 @@ function Header(): JSX.Element {
             <Link
               className="header__logo-link"
               to={AppRoute.Root}
-              // onClick={handleLogoClick}
             >
               <img
                 className={`header__logo ${styles.header__logo}`}
@@ -60,7 +46,7 @@ function Header(): JSX.Element {
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">{favList}</span>
                   </Link>
                 </li>
                 <li className="header__nav-item">

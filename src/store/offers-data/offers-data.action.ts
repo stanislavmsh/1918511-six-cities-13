@@ -19,3 +19,15 @@ export const fetchOffersAction = createAsyncThunk<{data : OffersList[]; city: Ci
     };
   }
 );
+
+export const fetchFavAction = createAsyncThunk<OffersList[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFavs',
+  async (_arg , { extra: api}): Promise< OffersList[]> => {
+    const {data} = await api.get<OffersList[]>(APIRoute.Favorite);
+    return data;
+  }
+);
