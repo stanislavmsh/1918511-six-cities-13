@@ -37,5 +37,3 @@ function OffersSection () {
 
 export default OffersSection;
 
-
-// page__main--index-empty  page__main--index

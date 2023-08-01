@@ -87,7 +87,6 @@ function Card(props: CardProps): JSX.Element {
         <h2 className="place-card__name">
           <Link
             to={`/offer/${id}`}
-            // onClick={handleCardItemClick}
           >
             {title}
           </Link>
