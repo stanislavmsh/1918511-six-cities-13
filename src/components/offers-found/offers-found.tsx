@@ -4,13 +4,15 @@ import Map from '../map/map';
 import Cards from '../cards/cards';
 import SortingOptions from '../sorting-options/sorting-options';
 import { useAppSelector } from '../../hooks';
-import { getSortedOffers , getCityName } from '../../store/offers-data/offers-data.selectors';
+import { getCityName } from '../../store/offers-data/offers-data.selectors';
 
-function OffersFound () : JSX.Element {
+type OffersFoundProps = {
+  filteredOffersByCity: OffersList[];
+}
+
+function OffersFound ({filteredOffersByCity} : OffersFoundProps) : JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
-
-  const filteredOffersByCity = useAppSelector(getSortedOffers);
   const handleListItemHover = (listItemId: string) => {
     const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 

@@ -24,7 +24,7 @@ function OffersSection () {
       </div>
 
       <div className="cities">
-        { isFound ? <OffersFound /> : <OffersNotFound />}
+        { isFound ? <OffersFound filteredOffersByCity={offersByCity}/> : <OffersNotFound />}
       </div>
 
     </main>

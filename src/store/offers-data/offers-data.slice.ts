@@ -11,7 +11,7 @@ const initialState: OffersData = {
   isOffersDataLoading: false,
   sortedOffers: [],
   hasError: false,
-  favouriteStatus: false,
+  // favouriteStatus: false,
 };
 export const offersData = createSlice({
   name: NameSpace.Offers,
@@ -39,8 +39,21 @@ export const offersData = createSlice({
           break;
       }
     },
-    formFavStatus : (state, action: PayloadAction<boolean>) => {
-      state.favouriteStatus = action.payload;
+    formFavStatus : (state, action: PayloadAction<{currentId: string ; favStatus: boolean}>) => {
+      state.offers = state.offers.map((elem) => {
+        if (elem.id === action.payload.currentId) {
+          return {...elem, isFavorite: action.payload.favStatus};
+        }
+        return elem;
+      });
+
+      state.sortedOffers = state.sortedOffers.map((elem) => {
+        if (elem.id === action.payload.currentId) {
+          return {...elem, isFavorite: action.payload.favStatus};
+        }
+        return elem;
+      });
+
     }
 
   },

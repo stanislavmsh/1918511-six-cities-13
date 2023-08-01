@@ -8,4 +8,4 @@ export const getCityName = (state: State): string => state[NameSpace.Offers].cit
 export const getSortedOffers = (state: State): OffersList[] => state[NameSpace.Offers].sortedOffers;
 export const getLoadingStatus = (state: State): boolean => state[NameSpace.Offers].isOffersDataLoading;
 export const getErrorStatus = (state: State): boolean => state[NameSpace.Offers].hasError;
-export const getFavouriteStatus = (state: State): boolean => state[NameSpace.Offers].favouriteStatus;
+// export const getFavouriteStatus = (state: State): boolean => state[NameSpace.Offers].favouriteStatus;

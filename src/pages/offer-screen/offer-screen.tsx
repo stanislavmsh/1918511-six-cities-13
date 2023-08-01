@@ -16,7 +16,7 @@ import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
 import cn from 'classnames';
 
-// import useFavoriteStatus from '../../hooks/use-favourite-status';
+import useFavoriteStatus from '../../hooks/use-favourite-status';
 
 
 function OfferScreen(): JSX.Element {
@@ -25,7 +25,9 @@ function OfferScreen(): JSX.Element {
   const offersList = useAppSelector(getOffers);
   const current = offersList.find((elem) => elem.id === parsedId) ;
   const navigate = useNavigate();
-  // const isOfferFavorite = useAppSelector(getFavouriteStatus);
+
+  const id = parsedId || '';
+  const isFavorite = current?.isFavorite || false;
 
   const [currentOffer , setCurrentOffer] = useState<SingleOffer>();
   const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
@@ -52,6 +54,10 @@ function OfferScreen(): JSX.Element {
         navigate('/404');
       });
   },[ navigate, parsedId]);
+
+
+  const {favoriteStatus, handleFavClick} = useFavoriteStatus({ id, isFavorite});
+
 
   return (
     <div className="page">
@@ -84,8 +90,10 @@ function OfferScreen(): JSX.Element {
                   {currentOffer?.title}
                 </h1>
                 <button className={cn('offer__bookmark-button button',
-                  {'offer__bookmark-button--active' : current?.isFavorite}
-                )} type="button"
+                  {'offer__bookmark-button--active' : favoriteStatus}
+                )}
+                type="button"
+                onClick={handleFavClick}
                 >
                   <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>

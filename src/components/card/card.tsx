@@ -26,7 +26,7 @@ function Card(props: CardProps): JSX.Element {
   };
 
   // const handleCardItemClick = () => {
-  //   dispatch(formFavStatus(favoriteStatus));
+  //   dispatch(formFavStatus({currentId: id , favStatus: favoriteStatus}));
   // };
 
   return (
@@ -82,7 +82,10 @@ function Card(props: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>
+          <Link
+            to={`/offer/${id}`}
+            // onClick={handleCardItemClick}
+          >
             {title}
           </Link>
         </h2>

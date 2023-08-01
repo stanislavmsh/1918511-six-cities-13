@@ -4,6 +4,9 @@ import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/user-process/user-process.action';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
+// import { fetchOffersAction } from '../../store/offers-data/offers-data.action';
+// import { getCityName } from '../../store/offers-data/offers-data.selectors';
+// import { CityName } from '../../const';
 
 function Header(): JSX.Element {
   const userStatus = useAppSelector(getAuthStatus);
@@ -18,12 +21,29 @@ function Header(): JSX.Element {
   };
 
 
+  // Бред
+  // const stringToEnum = (name: string): CityName | undefined => Object.values(CityName).find((city) => city === name);
+
+  // const currentCityName = useAppSelector(getCityName);
+  // const currentCityNameEnum = stringToEnum(currentCityName);
+  // const handleLogoClick = () => {
+  //   if(currentCityNameEnum){
+  //     dispatch(fetchOffersAction(currentCityNameEnum));
+  //   }
+
+  // };
+
+
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link" to={AppRoute.Root}>
+            <Link
+              className="header__logo-link"
+              to={AppRoute.Root}
+              // onClick={handleLogoClick}
+            >
               <img
                 className={`header__logo ${styles.header__logo}`}
                 src="img/logo.svg"

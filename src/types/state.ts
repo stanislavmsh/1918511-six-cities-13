@@ -12,7 +12,7 @@ export type OffersData = {
   isOffersDataLoading: boolean;
   sortedOffers: OffersList[];
   hasError: boolean;
-  favouriteStatus: boolean;
+  // favouriteStatus: boolean;
 }
 
 export type State = ReturnType<typeof store.getState>;

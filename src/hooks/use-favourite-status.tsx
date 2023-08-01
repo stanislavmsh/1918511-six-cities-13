@@ -5,7 +5,9 @@ import { AuthStatus , AppRoute, BACKEND_URL} from '../const';
 import { getAuthStatus } from '../store/user-process/user-process.selectors';
 import { getToken } from '../services/token';
 import { toast } from 'react-toastify';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { formFavStatus } from '../store/offers-data/offers-data.slice';
 
 type UseFavoriteStatusProps = {
   id: string;
@@ -14,10 +16,14 @@ type UseFavoriteStatusProps = {
 
 type FavResponseData = {
   isFavorite: boolean;
+  id: string;
 }
 
 const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
   const [favoriteStatus, setFavoriteStatus] = useState<boolean>(isFavorite);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isUserAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
   const status = favoriteStatus ? 0 : 1;
@@ -25,7 +31,7 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
 
   const handleFavClick = () => {
     if (!isUserAuth) {
-      return <Navigate to={AppRoute.Login} />;
+      return navigate(AppRoute.Login);
     }
 
     axios
@@ -36,6 +42,7 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
       })
       .then((response : AxiosResponse<FavResponseData>) => {
         setFavoriteStatus(response.data.isFavorite);
+        dispatch(formFavStatus({currentId: response.data.id , favStatus: response.data.isFavorite}));
       })
       .catch(() => {
         toast.warn('Error fav status');
