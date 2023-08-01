@@ -6,7 +6,6 @@ import { getFavorites } from '../../store/offers-data/offers-data.selectors';
 
 function FavoritesScreen(): JSX.Element {
   const favList = useAppSelector(getFavorites);
-  console.log(favList, 'kekScreen');
   return (
     <div className="page">
       <Header />

@@ -3,7 +3,6 @@ import { MouseEvent} from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './card.module.css';
-
 import useFavoriteStatus from '../../hooks/use-favourite-status';
 
 
@@ -13,27 +12,17 @@ type CardProps = {
   isOfferPage : boolean;
   isFavPage: boolean;
   isMainPage: boolean;
-  onCardDelete: (id: string) => void;
 };
 
 function Card(props: CardProps): JSX.Element {
-  const { offer, onListItemHover , isOfferPage , isFavPage, isMainPage, onCardDelete} = props;
+  const { offer, onListItemHover , isOfferPage , isFavPage, isMainPage} = props;
   const { price, title, type, id, previewImage , isPremium , rating , isFavorite} = offer;
-  // const dispatch = useAppDispatch();
   const {favoriteStatus , favClick } = useFavoriteStatus({id , isFavorite});
 
   const handleCardItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     onListItemHover(offer.id);
   };
-
-  const handleFavClick = () => {
-    favClick();
-    if (isFavPage) {
-      onCardDelete(id);
-    }
-  };
-
 
   return (
     <article
@@ -77,8 +66,8 @@ function Card(props: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <Link to='#'
-            onClick={handleFavClick}
+          <button
+            onClick={favClick}
             className={cn('place-card__bookmark-button button',
               { 'place-card__bookmark-button--active': favoriteStatus}
             ) } type="button"
@@ -87,7 +76,7 @@ function Card(props: CardProps): JSX.Element {
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
             <span className="visually-hidden">To bookmarks</span>
-          </Link>
+          </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

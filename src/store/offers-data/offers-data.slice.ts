@@ -54,6 +54,10 @@ export const offersData = createSlice({
         return elem;
       });
 
+      state.favorites = state.offers.filter((elem) =>
+        elem.isFavorite === true
+      );
+
     }
 
   },

@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { OffersList } from '../../types/offers-list';
-import { useState } from 'react';
-
 import Card from '../card/card';
 
 type FavotiresProps = {
@@ -9,15 +7,9 @@ type FavotiresProps = {
 }
 
 function Favorites ({favList} : FavotiresProps) : JSX.Element {
-  const [favoriteList, setFavoriteList] = useState<OffersList[]>(favList);
-
-  const handleCardDelete = (offerId: string) => {
-    const updatedFavoriteList = favoriteList.filter((offer) => offer.id !== offerId);
-    setFavoriteList(updatedFavoriteList);
-  };
 
   const uniqueCitiesSet = new Set<string>();
-  favoriteList.forEach((elem) => {
+  favList.forEach((elem) => {
     uniqueCitiesSet.add(elem.city.name);
   });
   const uniqueCities = Array.from(uniqueCitiesSet);
@@ -34,7 +26,7 @@ function Favorites ({favList} : FavotiresProps) : JSX.Element {
             </div>
           </div>
           <div className="favorites__places">
-            {favoriteList
+            {favList
               .filter((offer) => offer.city.name === cityName)
               .map((elem) => (
                 <Card
@@ -44,7 +36,6 @@ function Favorites ({favList} : FavotiresProps) : JSX.Element {
                   isMainPage={false}
                   isFavPage
                   onListItemHover={()=> null}
-                  onCardDelete={handleCardDelete}
                 />
               ))}
           </div>

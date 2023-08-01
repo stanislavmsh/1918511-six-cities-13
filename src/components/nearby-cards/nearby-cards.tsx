@@ -22,7 +22,6 @@ function NearbyCards ({offersList , onListItemHover}: NearbyCardsProps) : JSX.El
             isMainPage={false}
             offer={elem}
             onListItemHover={onListItemHover}
-            onCardDelete={()=> null}
           />))}
 
       </div>
