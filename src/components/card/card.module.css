@@ -2,3 +2,8 @@
   width:"260px";
   height:"200px";
 }
+
+.place_card__fav {
+  stroke: #4481c3;
+  fill: #4481c3;
+}

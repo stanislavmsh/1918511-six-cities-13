@@ -14,26 +14,34 @@ import axios from 'axios';
 import { IReview } from '../../types/review';
 import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
+import cn from 'classnames';
+
+// import useFavoriteStatus from '../../hooks/use-favourite-status';
 
 
 function OfferScreen(): JSX.Element {
-  const offersList = useAppSelector(getOffers);
-  const userStatus = useAppSelector(getAuthStatus);
-  const isCommentSectionShown = userStatus === AuthStatus.Auth;
+  const isCommentSectionShown = useAppSelector(getAuthStatus) === AuthStatus.Auth;
   const parsedId = useParams().id;
-
+  const offersList = useAppSelector(getOffers);
+  const current = offersList.find((elem) => elem.id === parsedId) ;
   const navigate = useNavigate();
+  // const isOfferFavorite = useAppSelector(getFavouriteStatus);
 
   const [currentOffer , setCurrentOffer] = useState<SingleOffer>();
   const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
   const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
+  const nearbyOnTheMap = nearbyOffers.slice(0, 3);
 
+  if (current) {
+    nearbyOnTheMap.push(current);
+  }
+  const nearbyThree = nearbyOnTheMap.slice(0, 3);
 
   useEffect(() => {
     const endpoints = [
       axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`),
       axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`),
-      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
+      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`),
     ];
     axios.all(endpoints).then(axios.spread((...responses) => {
       setCurrentOffer(responses[0].data as SingleOffer);
@@ -44,14 +52,6 @@ function OfferScreen(): JSX.Element {
         navigate('/404');
       });
   },[ navigate, parsedId]);
-
-  const nearbyOnTheMap = nearbyOffers.slice(0, 3);
-  const current = offersList.find((elem) => elem.id === parsedId) ;
-
-  if (current) {
-    nearbyOnTheMap.push(current);
-  }
-  const nearbyThree = nearbyOnTheMap.slice(0, 3);
 
   return (
     <div className="page">
@@ -83,7 +83,10 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {currentOffer?.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button className={cn('offer__bookmark-button button',
+                  {'offer__bookmark-button--active' : current?.isFavorite}
+                )} type="button"
+                >
                   <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

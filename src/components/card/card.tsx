@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './card.module.css';
 
+import useFavoriteStatus from '../../hooks/use-favourite-status';
+// import { useAppDispatch } from '../../hooks';
+// import { formFavStatus } from '../../store/offers-data/offers-data.slice';
+
 type CardProps = {
   offer: OffersList;
   onListItemHover: (listItemId: string) => void;
@@ -12,12 +16,18 @@ type CardProps = {
 
 function Card(props: CardProps): JSX.Element {
   const { offer, onListItemHover , isOfferPage} = props;
-  const { price, title, type, id, previewImage , isPremium , rating} = offer;
+  const { price, title, type, id, previewImage , isPremium , rating , isFavorite} = offer;
+  // const dispatch = useAppDispatch();
+  const {favoriteStatus , handleFavClick } = useFavoriteStatus({id , isFavorite});
 
   const handleCardItemHover = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     onListItemHover(offer.id);
   };
+
+  // const handleCardItemClick = () => {
+  //   dispatch(formFavStatus(favoriteStatus));
+  // };
 
   return (
     <article
@@ -53,7 +63,12 @@ function Card(props: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
+          <button
+            onClick={handleFavClick}
+            className={cn('place-card__bookmark-button button',
+              { 'place-card__bookmark-button--active': favoriteStatus}
+            ) } type="button"
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -67,7 +82,9 @@ function Card(props: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`/offer/${id}`}>
+            {title}
+          </Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

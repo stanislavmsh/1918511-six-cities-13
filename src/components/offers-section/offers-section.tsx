@@ -9,7 +9,7 @@ import cn from 'classnames';
 function OffersSection () {
 
   const offersByCity = useAppSelector(getSortedOffers);
-  const isFound = offersByCity.length < 0;
+  const isFound = offersByCity.length > 0;
   return (
 
     <main className={cn('page__main page__main--index',

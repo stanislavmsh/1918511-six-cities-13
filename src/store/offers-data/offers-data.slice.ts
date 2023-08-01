@@ -2,6 +2,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace , SortingOption} from '../../const';
 import { OffersData } from '../../types/state';
 import { fetchOffersAction } from './offers-data.action';
+// import { OffersList } from '../../types/offers-list';
+
 
 const initialState: OffersData = {
   cityName: 'Paris',
@@ -9,6 +11,7 @@ const initialState: OffersData = {
   isOffersDataLoading: false,
   sortedOffers: [],
   hasError: false,
+  favouriteStatus: false,
 };
 export const offersData = createSlice({
   name: NameSpace.Offers,
@@ -36,6 +39,9 @@ export const offersData = createSlice({
           break;
       }
     },
+    formFavStatus : (state, action: PayloadAction<boolean>) => {
+      state.favouriteStatus = action.payload;
+    }
 
   },
   extraReducers(builder) {
@@ -60,4 +66,4 @@ export const offersData = createSlice({
 });
 
 
-export const { sortOffersByCity, cityNameChange, sortOffers } = offersData.actions;
+export const { sortOffersByCity, cityNameChange, sortOffers , formFavStatus} = offersData.actions;
