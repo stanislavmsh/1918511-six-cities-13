@@ -180,7 +180,7 @@ function OfferScreen(): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            {nearbyOffers.length !== 0 && <Map offers={nearbyOnTheMap} selectedPoint={undefined} />}
+            {nearbyOffers.length !== 0 && <Map offers={nearbyOnTheMap} selectedPoint={current} />}
           </section>
         </section>
         <div className="container">
