@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { formFavStatus } from '../store/offers-data/offers-data.slice';
+import { useEffect } from 'react';
 
 type UseFavoriteStatusProps = {
   id: string;
@@ -28,6 +29,12 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
   const isUserAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
   const status = favoriteStatus ? 0 : 1;
   const token = getToken();
+
+  useEffect(() => {
+    if (!isUserAuth) {
+      setFavoriteStatus(false);
+    }
+  }, [isUserAuth]);
 
   const favClick = () => {
     if (!isUserAuth) {

@@ -26,7 +26,7 @@ export const fetchFavAction = createAsyncThunk<OffersList[], undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchFavs',
-  async (_arg , { extra: api}): Promise< OffersList[]> => {
+  async (_arg , { extra: api}): Promise<OffersList[]> => {
     const {data} = await api.get<OffersList[]>(APIRoute.Favorite);
     return data;
   }
