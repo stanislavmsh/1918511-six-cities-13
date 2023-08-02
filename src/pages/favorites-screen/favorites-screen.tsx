@@ -3,31 +3,32 @@ import Favorites from '../../components/favorites/favorites';
 import { useAppSelector } from '../../hooks';
 import styles from './favorites-screen.module.css';
 import { getFavorites } from '../../store/offers-data/offers-data.selectors';
+import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
+import cn from 'classnames';
 
 function FavoritesScreen(): JSX.Element {
   const favList = useAppSelector(getFavorites);
+  const isNotEmpty = favList.length > 0;
+
   return (
-    <div className="page">
+    <div className={cn('page',
+      {'page--favorites-empty' : !isNotEmpty})}
+    >
       <Header />
 
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
+      { isNotEmpty ? <Favorites favList={favList}/> : <FavoritesEmpty />}
 
-            <Favorites favList={favList}/>
-
-          </section>
-        </div>
-      </main>
       <footer className="footer container">
-        <a className={`footer__logo-link ${styles.footer__logo}`} href="main.html">
+        <Link className={`footer__logo-link ${styles.footer__logo}`} to={AppRoute.Root}>
           <img
             className="footer__logo"
             src="img/logo.svg"
             alt="6 cities logo"
           />
-        </a>
+        </Link>
       </footer>
     </div>
   );

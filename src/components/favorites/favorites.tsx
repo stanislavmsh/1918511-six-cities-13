@@ -15,34 +15,43 @@ function Favorites ({favList} : FavotiresProps) : JSX.Element {
   const uniqueCities = Array.from(uniqueCitiesSet);
 
   return (
-    <ul className="favorites__list">
-      {uniqueCities.map((cityName) => (
-        <li className="favorites__locations-items" key={`${cityName}-xxxcityxxx`}>
-          <div className="favorites__locations locations locations--current">
-            <div className="locations__item">
-              <Link className="locations__item-link" to="#">
-                <span>{cityName}</span>
-              </Link>
-            </div>
-          </div>
-          <div className="favorites__places">
-            {favList
-              .filter((offer) => offer.city.name === cityName)
-              .map((elem) => (
-                <Card
-                  key={`${elem.id}-favs`}
-                  offer={elem}
-                  isOfferPage={false}
-                  isMainPage={false}
-                  isFavPage
-                  onListItemHover={()=> null}
-                />
-              ))}
-          </div>
-        </li>
-      ))}
-    </ul>
+    <main className="page__main page__main--favorites">
+      <div className="page__favorites-container container">
+        <section className="favorites">
+          <h1 className="favorites__title">Saved listing</h1>
+          <ul className="favorites__list">
+            {uniqueCities.map((cityName) => (
+              <li className="favorites__locations-items" key={`${cityName}-xxxcityxxx`}>
+                <div className="favorites__locations locations locations--current">
+                  <div className="locations__item">
+                    <Link className="locations__item-link" to="#">
+                      <span>{cityName}</span>
+                    </Link>
+                  </div>
+                </div>
+                <div className="favorites__places">
+                  {favList
+                    .filter((offer) => offer.city.name === cityName)
+                    .map((elem) => (
+                      <Card
+                        key={`${elem.id}-favs`}
+                        offer={elem}
+                        isOfferPage={false}
+                        isMainPage={false}
+                        isFavPage
+                        onListItemHover={()=> null}
+                      />
+                    ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </main>
   );
 }
 
 export default Favorites;
+
+
