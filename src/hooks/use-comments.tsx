@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BACKEND_URL } from '../const';
 import { IReview } from '../types/review';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 type CommentFormProps = {
@@ -50,7 +51,7 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useC
       }
       )
       .catch(() => {
-        throw new Error('Comment Sending Error');
+        toast.warn('comment sending error');
       }
       );
 

@@ -172,7 +172,7 @@ function OfferScreen(): JSX.Element {
               <section className="offer__reviews reviews">
 
 
-                {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
+                {currentOfferComments && <Reviews comments={currentOfferComments}/>}
 
                 {isCommentSectionShown && <CommentForm setCurrentOfferComments={setCurrentOfferComments}/>}
 

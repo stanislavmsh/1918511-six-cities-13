@@ -15,7 +15,7 @@ function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Ele
   const token = getToken();
 
   const {form , onStarChangeHandler , textChangeHandler , submitComment} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
-  const isCommentSubmitDisabled = form.comment.length < 50;
+  const isCommentSubmitAvailable = form.comment.length > 50 && form.rating !== 0;
 
   const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -34,7 +34,7 @@ function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Ele
         Your review
       </label>
 
-      <Stars onStarChange={onStarChangeHandler}/>
+      <Stars onStarChange={onStarChangeHandler} currentRating={form.rating}/>
 
       <textarea
         maxLength={300}
@@ -54,7 +54,7 @@ function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Ele
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {isCommentSubmitDisabled}
+          disabled = {!isCommentSubmitAvailable}
         >
           Submit
         </button>
