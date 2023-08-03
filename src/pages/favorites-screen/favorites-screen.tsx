@@ -18,9 +18,7 @@ function FavoritesScreen(): JSX.Element {
       {'page--favorites-empty' : !isNotEmpty})}
     >
       <Header />
-
       { isNotEmpty ? <Favorites favList={favList}/> : <FavoritesEmpty />}
-
       <footer className="footer container">
         <Link className={`footer__logo-link ${styles.footer__logo}`} to={AppRoute.Root}>
           <img

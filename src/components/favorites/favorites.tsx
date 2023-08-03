@@ -8,11 +8,11 @@ type TFavotiresProps = {
 
 function Favorites ({favList} : TFavotiresProps) : JSX.Element {
 
-  const uniqueCitiesSet = new Set<string>();
+  const citiesSet = new Set<string>();
   favList.forEach((elem) => {
-    uniqueCitiesSet.add(elem.city.name);
+    citiesSet.add(elem.city.name);
   });
-  const uniqueCities = Array.from(uniqueCitiesSet);
+  const uniqueCities = Array.from(citiesSet);
 
   return (
     <main className="page__main page__main--favorites">
