@@ -1,4 +1,4 @@
-import { OffersList } from '../../types/offers-list';
+import { TOffersList } from '../../types/offers-list';
 import { MouseEvent} from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
@@ -6,15 +6,15 @@ import styles from './card.module.css';
 import useFavoriteStatus from '../../hooks/use-favourite-status';
 
 
-type CardProps = {
-  offer: OffersList;
+type TCardProps = {
+  offer: TOffersList;
   onListItemHover: (listItemId: string) => void;
   isOfferPage : boolean;
   isFavPage: boolean;
   isMainPage: boolean;
 };
 
-function Card(props: CardProps): JSX.Element {
+function Card(props: TCardProps): JSX.Element {
   const { offer, onListItemHover , isOfferPage , isFavPage, isMainPage} = props;
   const { price, title, type, id, previewImage , isPremium , rating , isFavorite} = offer;
   const {favoriteStatus , favClick } = useFavoriteStatus({id , isFavorite});

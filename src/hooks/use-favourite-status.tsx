@@ -10,17 +10,17 @@ import { useDispatch } from 'react-redux';
 import { formFavStatus } from '../store/offers-data/offers-data.slice';
 import { useEffect } from 'react';
 
-type UseFavoriteStatusProps = {
+type TUseFavoriteStatusProps = {
   id: string;
   isFavorite: boolean;
 };
 
-type FavResponseData = {
+type TFavResponseData = {
   isFavorite: boolean;
   id: string;
 }
 
-const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
+const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
   const [favoriteStatus, setFavoriteStatus] = useState<boolean>(isFavorite);
 
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const useFavoriteStatus = ({ id, isFavorite }: UseFavoriteStatusProps) => {
           'x-token': token,
         },
       })
-      .then((response : AxiosResponse<FavResponseData>) => {
+      .then((response : AxiosResponse<TFavResponseData>) => {
         setFavoriteStatus(response.data.isFavorite);
         dispatch(formFavStatus({currentId: response.data.id , favStatus: response.data.isFavorite}));
       })

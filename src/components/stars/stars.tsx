@@ -29,12 +29,12 @@ const RatingStarsData = [
 
 ];
 
-type StarsProps = {
+type TStarsProps = {
   onStarChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   currentRating: number;
 }
 
-function Stars ({onStarChange, currentRating} : StarsProps) : JSX.Element {
+function Stars ({onStarChange, currentRating} : TStarsProps) : JSX.Element {
 
   const isRatingSelected = (value : string) : boolean => currentRating === Number(value);
 

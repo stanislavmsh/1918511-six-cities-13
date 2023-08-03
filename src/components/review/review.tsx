@@ -1,11 +1,11 @@
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 
-type ReviewProps = {
-  review: IReview;
+type TReviewProps = {
+  review: TReview;
 }
 
 
-function Review({review} : ReviewProps): JSX.Element {
+function Review({review} : TReviewProps): JSX.Element {
 
   const humanizedDate = new Date(review.date).toLocaleString('en-US',
     {

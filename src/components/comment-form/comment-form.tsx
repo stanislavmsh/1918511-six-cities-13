@@ -2,15 +2,15 @@ import React, { FormEvent } from 'react';
 import Stars from '../stars/stars';
 import { useParams } from 'react-router-dom';
 import { getToken } from '../../services/token';
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 
 import useCommentSubmission from '../../hooks/use-comments';
 
-type setNewCommentsProps = {
-  setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
+type TCommentFormProps = {
+  setCurrentOfferComments : React.Dispatch<React.SetStateAction<TReview[] | undefined>>;
 }
 
-function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Element {
+function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Element {
   const parsedId = useParams().id || '';
   const token = getToken();
 

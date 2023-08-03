@@ -1,12 +1,12 @@
 import Review from '../review/review';
 import React from 'react';
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 
-type ReviewsProps = {
-  comments: IReview[];
+type TReviewsProps = {
+  comments: TReview[];
 }
 
-function Reviews({ comments }: ReviewsProps): JSX.Element {
+function Reviews({ comments }: TReviewsProps): JSX.Element {
   const sortedCommentsByDate = comments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const limitedComments = sortedCommentsByDate.slice(0, 10);
 

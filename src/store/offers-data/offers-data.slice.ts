@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace , SortingOption} from '../../const';
-import { OffersData } from '../../types/state';
+import { TOffersData } from '../../types/state';
 import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 
 
-const initialState: OffersData = {
+const initialState: TOffersData = {
   cityName: 'Paris',
   offers: [],
   isOffersDataLoading: false,

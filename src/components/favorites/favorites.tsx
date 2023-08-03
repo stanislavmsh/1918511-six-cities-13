@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { OffersList } from '../../types/offers-list';
+import { TOffersList } from '../../types/offers-list';
 import Card from '../card/card';
 
-type FavotiresProps = {
-  favList: OffersList[];
+type TFavotiresProps = {
+  favList: TOffersList[];
 }
 
-function Favorites ({favList} : FavotiresProps) : JSX.Element {
+function Favorites ({favList} : TFavotiresProps) : JSX.Element {
 
   const uniqueCitiesSet = new Set<string>();
   favList.forEach((elem) => {

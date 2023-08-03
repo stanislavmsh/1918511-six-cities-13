@@ -3,15 +3,15 @@ import CommentForm from '../../components/comment-form/comment-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
-import { SingleOffer } from '../../types/offer';
-import { OffersList } from '../../types/offers-list';
+import { TSingleOffer } from '../../types/offer';
+import { TOffersList } from '../../types/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import styles from './offer-screen.module.css';
 import axios from 'axios';
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
 import cn from 'classnames';
@@ -29,9 +29,9 @@ function OfferScreen(): JSX.Element {
   const id = parsedId || '';
   const isFavorite = current?.isFavorite || false;
 
-  const [currentOffer , setCurrentOffer] = useState<SingleOffer>();
-  const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
-  const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
+  const [currentOffer , setCurrentOffer] = useState<TSingleOffer>();
+  const [nearbyOffers , setNearbyOffers] = useState<TOffersList[]>(offersList);
+  const [currentOfferComments , setCurrentOfferComments] = useState<TReview[]>();
   const nearbyOnTheMap = nearbyOffers.slice(0, 3);
 
   if (current) {
@@ -46,9 +46,9 @@ function OfferScreen(): JSX.Element {
       axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`),
     ];
     axios.all(endpoints).then(axios.spread((...responses) => {
-      setCurrentOffer(responses[0].data as SingleOffer);
-      setNearbyOffers(responses[1].data as OffersList[]);
-      setCurrentOfferComments(responses[2].data as IReview[]);
+      setCurrentOffer(responses[0].data as TSingleOffer);
+      setNearbyOffers(responses[1].data as TOffersList[]);
+      setCurrentOfferComments(responses[2].data as TReview[]);
     }))
       .catch(() => {
         navigate('/404');

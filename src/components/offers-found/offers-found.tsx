@@ -1,4 +1,4 @@
-import { OffersList } from '../../types/offers-list';
+import { TOffersList } from '../../types/offers-list';
 import { useState } from 'react';
 import Map from '../map/map';
 import Cards from '../cards/cards';
@@ -6,13 +6,13 @@ import SortingOptions from '../sorting-options/sorting-options';
 import { useAppSelector } from '../../hooks';
 import { getCityName } from '../../store/offers-data/offers-data.selectors';
 
-type OffersFoundProps = {
-  filteredOffersByCity: OffersList[];
+type TOffersFoundProps = {
+  filteredOffersByCity: TOffersList[];
 }
 
-function OffersFound ({filteredOffersByCity} : OffersFoundProps) : JSX.Element {
+function OffersFound ({filteredOffersByCity} : TOffersFoundProps) : JSX.Element {
 
-  const [selectedOffer, setSelectedOffer] = useState<OffersList | undefined>(undefined);
+  const [selectedOffer, setSelectedOffer] = useState<TOffersList | undefined>(undefined);
   const handleListItemHover = (listItemId: string) => {
     const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 

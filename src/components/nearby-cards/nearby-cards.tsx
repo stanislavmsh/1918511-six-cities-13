@@ -1,13 +1,13 @@
 import Card from '../card/card';
-import { OffersList } from '../../types/offers-list';
+import { TOffersList } from '../../types/offers-list';
 
-type NearbyCardsProps = {
-  offersList: OffersList[];
+type TNearbyCardsProps = {
+  offersList: TOffersList[];
   onListItemHover: (listItemId: string) => void;
 };
 
 
-function NearbyCards ({offersList , onListItemHover}: NearbyCardsProps) : JSX.Element {
+function NearbyCards ({offersList , onListItemHover}: TNearbyCardsProps) : JSX.Element {
   return (
     <section className="near-places places">
       <h2 className="near-places__title">

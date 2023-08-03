@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { BACKEND_URL } from '../const';
-import { IReview } from '../types/review';
+import { TReview } from '../types/review';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-type CommentFormProps = {
+type TCommentFormProps = {
   rating: number;
   comment: string;
 };
 
-type useCommentSubmissionProps = {
+type TUseCommentSubmissionProps = {
   parsedId: string;
   token: string;
-  setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
+  setCurrentOfferComments : React.Dispatch<React.SetStateAction<TReview[] | undefined>>;
 }
 
 
-function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useCommentSubmissionProps) {
-  const [form , setForm] = useState<CommentFormProps>({ rating: 0 , comment: ''});
+function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUseCommentSubmissionProps) {
+  const [form , setForm] = useState<TCommentFormProps>({ rating: 0 , comment: ''});
 
   const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevState) => ({
@@ -31,7 +31,7 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useC
   };
 
   const submitComment = () => {
-    axios.post<IReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
+    axios.post<TReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
       headers: {
         'x-token': token
       }
