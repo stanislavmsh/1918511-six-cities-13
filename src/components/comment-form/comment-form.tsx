@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import Stars from '../stars/stars';
 import { useParams } from 'react-router-dom';
 import { getToken } from '../../services/token';
@@ -14,13 +14,13 @@ function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Eleme
   const parsedId = useParams().id || '';
   const token = getToken();
 
-  const {form , onStarChangeHandler , textChangeHandler , submitComment} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
+  const {form , onStarChangeHandler , textChangeHandler , submitCommentHandler} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
   const isCommentSubmitAvailable = form.comment.length > 50 && form.rating !== 0;
 
-  const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    submitComment();
-  };
+  // const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
+  //   evt.preventDefault();
+  //   submitComment();
+  // } , [submitComment]);
 
   return (
     <form

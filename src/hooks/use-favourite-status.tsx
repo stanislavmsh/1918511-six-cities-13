@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { useState , useEffect , useCallback } from 'react';
 import { useAppSelector } from '.';
 import { AuthStatus , AppRoute, BACKEND_URL} from '../const';
 import { getAuthStatus } from '../store/user-process/user-process.selectors';
@@ -8,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { formFavStatus } from '../store/offers-data/offers-data.slice';
-import { useEffect } from 'react';
+import axios, { AxiosResponse } from 'axios';
 
 type TUseFavoriteStatusProps = {
   id: string;
@@ -36,7 +35,7 @@ const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
     }
   }, [isUserAuth]);
 
-  const favClick = () => {
+  const handleFavClick = useCallback(() => {
     if (!isUserAuth) {
       return navigate(AppRoute.Login);
     }
@@ -54,9 +53,9 @@ const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
       .catch(() => {
         toast.warn('Error fav status');
       });
-  };
+  }, [dispatch, id, isUserAuth, navigate, status, token]);
 
-  return { favoriteStatus, favClick };
+  return { favoriteStatus, handleFavClick };
 };
 
 export default useFavoriteStatus;

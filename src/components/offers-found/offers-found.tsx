@@ -1,10 +1,10 @@
 import { TOffersList } from '../../types/offers-list';
-import { useState } from 'react';
+import { useState , useCallback } from 'react';
+import { useAppSelector } from '../../hooks';
+import { getCityName } from '../../store/offers-data/offers-data.selectors';
 import Map from '../map/map';
 import Cards from '../cards/cards';
 import SortingOptions from '../sorting-options/sorting-options';
-import { useAppSelector } from '../../hooks';
-import { getCityName } from '../../store/offers-data/offers-data.selectors';
 
 type TOffersFoundProps = {
   filteredOffersByCity: TOffersList[];
@@ -13,11 +13,11 @@ type TOffersFoundProps = {
 function OffersFound ({filteredOffersByCity} : TOffersFoundProps) : JSX.Element {
 
   const [selectedOffer, setSelectedOffer] = useState<TOffersList | undefined>(undefined);
-  const handleListItemHover = (listItemId: string) => {
+  const handleListItemHover = useCallback((listItemId: string) => {
     const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 
     setSelectedOffer(currentOffer);
-  };
+  },[filteredOffersByCity]);
 
   const selectedCityName = useAppSelector(getCityName);
 

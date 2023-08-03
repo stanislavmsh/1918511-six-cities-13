@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState , useCallback , FormEvent } from 'react';
 import { BACKEND_URL } from '../const';
 import { TReview } from '../types/review';
 import { toast } from 'react-toastify';
@@ -19,18 +19,16 @@ type TUseCommentSubmissionProps = {
 function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUseCommentSubmissionProps) {
   const [form , setForm] = useState<TCommentFormProps>({ rating: 0 , comment: ''});
 
-  const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevState) => ({
-      ...prevState,
-      rating: Number(evt.target.value),
-    }));
-  };
+  const onStarChangeHandler = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({...form , rating: Number(evt.target.value)});
+  }, [form]);
 
-  const textChangeHandler = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({ ...form, comment: evt.target.value });
-  };
+  const textChangeHandler = useCallback((evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setForm({...form, comment: evt.target.value});
+  }, [form]);
 
-  const submitComment = () => {
+  const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
     axios.post<TReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
       headers: {
         'x-token': token
@@ -56,9 +54,9 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUse
       );
 
 
-  };
+  },[form , parsedId , setCurrentOfferComments , token]);
 
-  return { form, onStarChangeHandler, textChangeHandler, submitComment };
+  return { form, onStarChangeHandler, textChangeHandler, submitCommentHandler };
 }
 
 

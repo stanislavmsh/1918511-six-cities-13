@@ -1,24 +1,25 @@
-import { useState } from 'react';
+import { useState , useCallback} from 'react';
 import { SortingOption } from '../../const';
-import styles from './sorting-options.module.css';
-import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { sortOffers } from '../../store/offers-data/offers-data.slice';
+import cn from 'classnames';
+import styles from './sorting-options.module.css';
 
 function SortingOptions() : JSX.Element {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [selectedSort, setSelectedSort] = useState<string>('Popular');
+  const dispatch = useDispatch();
 
-  const handleOpenList = () => {
+  const handleOpenList = useCallback(() => {
     setIsOpened((opened) => !opened);
-  };
+  },[]);
 
-  const handleOptionClick = (optionText : string) => {
+  const handleOptionClick = useCallback((optionText : SortingOption) => () => {
     setSelectedSort(optionText);
     setIsOpened(false);
-  };
+    dispatch(sortOffers(optionText));
+  },[dispatch]);
 
-  const dispatch = useDispatch();
 
   return (
     <form className="places__sorting" action="#" method="get">
@@ -44,10 +45,7 @@ function SortingOptions() : JSX.Element {
               {'places__option--active' : selectedSort === elem}
             )}
             tabIndex={0}
-            onClick={() => {
-              handleOptionClick(elem);
-              dispatch(sortOffers(elem));
-            }}
+            onClick={handleOptionClick(elem)}
           >
             {elem}
           </li>

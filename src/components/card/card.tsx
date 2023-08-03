@@ -1,9 +1,9 @@
 import { TOffersList } from '../../types/offers-list';
-import { MouseEvent} from 'react';
+import { MouseEvent, useCallback} from 'react';
 import { Link } from 'react-router-dom';
+import useFavoriteStatus from '../../hooks/use-favourite-status';
 import cn from 'classnames';
 import styles from './card.module.css';
-import useFavoriteStatus from '../../hooks/use-favourite-status';
 
 
 type TCardProps = {
@@ -17,12 +17,12 @@ type TCardProps = {
 function Card(props: TCardProps): JSX.Element {
   const { offer, onListItemHover , isOfferPage , isFavPage, isMainPage} = props;
   const { price, title, type, id, previewImage , isPremium , rating , isFavorite} = offer;
-  const {favoriteStatus , favClick } = useFavoriteStatus({id , isFavorite});
+  const {favoriteStatus , handleFavClick } = useFavoriteStatus({id , isFavorite});
 
-  const handleCardItemHover = (evt: MouseEvent<HTMLElement>) => {
+  const handleCardItemHover = useCallback((evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     onListItemHover(offer.id);
-  };
+  },[offer.id , onListItemHover]);
 
   return (
     <article
@@ -67,7 +67,7 @@ function Card(props: TCardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            onClick={favClick}
+            onClick={handleFavClick}
             className={cn('place-card__bookmark-button button',
               { 'place-card__bookmark-button--active': favoriteStatus}
             ) } type="button"

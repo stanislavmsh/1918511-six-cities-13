@@ -1,10 +1,11 @@
 import { Link} from 'react-router-dom';
-import styles from './header.module.css';
 import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/user-process/user-process.action';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
 import { getFavorites } from '../../store/offers-data/offers-data.selectors';
+import { useCallback } from 'react';
+import styles from './header.module.css';
 
 
 function Header(): JSX.Element {
@@ -14,11 +15,11 @@ function Header(): JSX.Element {
 
   const isLoggedIn = userStatus === AuthStatus.Auth;
 
-  const handleLogout = () => {
+  const handleLogoutClick = useCallback(() => {
     if(isLoggedIn) {
       dispatch(logoutAction());
     }
-  };
+  },[dispatch , isLoggedIn]);
 
   return (
     <header className="header">
@@ -49,7 +50,7 @@ function Header(): JSX.Element {
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link onClick={handleLogout} className="header__nav-link" to="/">
+                  <Link onClick={handleLogoutClick} className="header__nav-link" to="/">
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>

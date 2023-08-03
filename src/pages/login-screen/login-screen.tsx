@@ -8,7 +8,6 @@ import { getAuthStatus } from '../../store/user-process/user-process.selectors';
 import { toast } from 'react-toastify';
 
 function LoginScreen(): JSX.Element {
-
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 

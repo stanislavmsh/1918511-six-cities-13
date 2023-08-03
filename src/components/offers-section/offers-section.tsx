@@ -7,7 +7,6 @@ import cn from 'classnames';
 
 
 function OffersSection () {
-
   const offersByCity = useAppSelector(getSortedOffers);
   const isFound = offersByCity.length > 0;
   return (

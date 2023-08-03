@@ -3,20 +3,19 @@ import CommentForm from '../../components/comment-form/comment-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
+import axios from 'axios';
 import { TSingleOffer } from '../../types/offer';
 import { TOffersList } from '../../types/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
-import styles from './offer-screen.module.css';
-import axios from 'axios';
 import { TReview } from '../../types/review';
 import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
-import cn from 'classnames';
-
 import useFavoriteStatus from '../../hooks/use-favourite-status';
+import styles from './offer-screen.module.css';
+import cn from 'classnames';
 
 
 function OfferScreen(): JSX.Element {
@@ -55,9 +54,7 @@ function OfferScreen(): JSX.Element {
       });
   },[ navigate, parsedId]);
 
-
-  const {favoriteStatus, favClick} = useFavoriteStatus({ id, isFavorite});
-
+  const {favoriteStatus, handleFavClick} = useFavoriteStatus({ id, isFavorite});
 
   return (
     <div className="page">
@@ -93,7 +90,7 @@ function OfferScreen(): JSX.Element {
                   {'offer__bookmark-button--active' : favoriteStatus}
                 )}
                 type="button"
-                onClick={favClick}
+                onClick={handleFavClick}
                 >
                   <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>
@@ -162,20 +159,11 @@ function OfferScreen(): JSX.Element {
                   <p className="offer__text">
                     {currentOffer?.description}
                   </p>
-                  {/* <p className="offer__text">
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city
-                    comes to rest in this alley flowery and colorful.
-                  </p> */}
                 </div>
               </div>
               <section className="offer__reviews reviews">
-
-
                 {currentOfferComments && <Reviews comments={currentOfferComments}/>}
-
                 {isCommentSectionShown && <CommentForm setCurrentOfferComments={setCurrentOfferComments}/>}
-
               </section>
             </div>
           </div>
