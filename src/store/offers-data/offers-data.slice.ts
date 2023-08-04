@@ -66,10 +66,10 @@ export const offersData = createSlice({
         state.isOffersDataLoading = true;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
-        state.offers = action.payload.data;
+        state.offers = action.payload;
         state.isOffersDataLoading = false;
-        state.cityName = action.payload.city;
-        state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
+        // state.cityName = action.payload.city;
+        state.sortedOffers = action.payload.filter((elem) => elem.city.name === state.cityName);
       })
       .addCase(fetchFavAction.fulfilled , (state, action) => {
         state.favorites = action.payload;
