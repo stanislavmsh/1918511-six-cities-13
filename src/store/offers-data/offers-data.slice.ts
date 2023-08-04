@@ -1,14 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace , SortingOption} from '../../const';
-import { OffersData } from '../../types/state';
-import { fetchOffersAction } from './offers-data.action';
+import { TOffersData } from '../../types/state';
+import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 
-const initialState: OffersData = {
+
+const initialState: TOffersData = {
   cityName: 'Paris',
   offers: [],
   isOffersDataLoading: false,
   sortedOffers: [],
   hasError: false,
+  favorites: [],
 };
 export const offersData = createSlice({
   name: NameSpace.Offers,
@@ -36,6 +38,26 @@ export const offersData = createSlice({
           break;
       }
     },
+    formFavStatus : (state, action: PayloadAction<{currentId: string ; favStatus: boolean}>) => {
+      state.offers = state.offers.map((elem) => {
+        if (elem.id === action.payload.currentId) {
+          return {...elem, isFavorite: action.payload.favStatus};
+        }
+        return elem;
+      });
+
+      state.sortedOffers = state.sortedOffers.map((elem) => {
+        if (elem.id === action.payload.currentId) {
+          return {...elem, isFavorite: action.payload.favStatus};
+        }
+        return elem;
+      });
+
+      state.favorites = state.offers.filter((elem) =>
+        elem.isFavorite === true
+      );
+
+    }
 
   },
   extraReducers(builder) {
@@ -49,15 +71,20 @@ export const offersData = createSlice({
         state.cityName = action.payload.city;
         state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
       })
+      .addCase(fetchFavAction.fulfilled , (state, action) => {
+        state.favorites = action.payload;
+      })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
         state.cityName = 'Paris';
         state.offers = [];
         state.hasError = true;
+      })
+      .addCase(fetchFavAction.rejected, (state) => {
+        state.favorites = [];
       });
-
   }
 });
 
 
-export const { sortOffersByCity, cityNameChange, sortOffers } = offersData.actions;
+export const { sortOffersByCity, cityNameChange, sortOffers , formFavStatus} = offersData.actions;

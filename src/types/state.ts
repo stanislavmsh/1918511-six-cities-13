@@ -1,17 +1,18 @@
 import { store } from '../store';
 import { AuthStatus } from '../const';
-import { OffersList } from './offers-list';
+import { TOffersList } from './offers-list';
 
-export type UserProcess = {
+export type TUserProcess = {
   authorizationStatus: AuthStatus;
 }
 
-export type OffersData = {
+export type TOffersData = {
   cityName: string;
-  offers: OffersList[];
+  offers: TOffersList[];
   isOffersDataLoading: boolean;
-  sortedOffers: OffersList[];
+  sortedOffers: TOffersList[];
   hasError: boolean;
+  favorites: TOffersList[];
 }
 
 export type State = ReturnType<typeof store.getState>;

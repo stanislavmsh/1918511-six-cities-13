@@ -3,55 +3,58 @@ import CommentForm from '../../components/comment-form/comment-form';
 import Reviews from '../../components/reviews/reviews';
 import Map from '../../components/map/map';
 import NearbyCards from '../../components/nearby-cards/nearby-cards';
-import { SingleOffer } from '../../types/offer';
-import { OffersList } from '../../types/offers-list';
+import axios from 'axios';
+import { TSingleOffer } from '../../types/offer';
+import { TOffersList } from '../../types/offers-list';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { AuthStatus, BACKEND_URL } from '../../const';
 import { useEffect, useState } from 'react';
-import styles from './offer-screen.module.css';
-import axios from 'axios';
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
+import useFavoriteStatus from '../../hooks/use-favourite-status';
+import styles from './offer-screen.module.css';
+import cn from 'classnames';
 
 
 function OfferScreen(): JSX.Element {
-  const offersList = useAppSelector(getOffers);
-  const userStatus = useAppSelector(getAuthStatus);
-  const isCommentSectionShown = userStatus === AuthStatus.Auth;
+  const isCommentSectionShown = useAppSelector(getAuthStatus) === AuthStatus.Auth;
   const parsedId = useParams().id;
-
+  const offersList = useAppSelector(getOffers);
+  const current = offersList.find((elem) => elem.id === parsedId) ;
   const navigate = useNavigate();
 
-  const [currentOffer , setCurrentOffer] = useState<SingleOffer>();
-  const [nearbyOffers , setNearbyOffers] = useState<OffersList[]>(offersList);
-  const [currentOfferComments , setCurrentOfferComments] = useState<IReview[]>();
+  const id = parsedId || '';
+  const isFavorite = current?.isFavorite || false;
 
+  const [currentOffer , setCurrentOffer] = useState<TSingleOffer>();
+  const [nearbyOffers , setNearbyOffers] = useState<TOffersList[]>(offersList);
+  const [currentOfferComments , setCurrentOfferComments] = useState<TReview[]>();
+  const nearbyOnTheMap = nearbyOffers.slice(0, 3);
+
+  if (current) {
+    nearbyOnTheMap.push(current);
+  }
+  const nearbyThree = nearbyOnTheMap.slice(0, 3);
 
   useEffect(() => {
     const endpoints = [
       axios.get(`${BACKEND_URL}/offers/${parsedId || ''}`),
       axios.get(`${BACKEND_URL}/offers/${parsedId || ''}/nearby`),
-      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`)
+      axios.get(`${BACKEND_URL}/comments/${parsedId || ''}/`),
     ];
     axios.all(endpoints).then(axios.spread((...responses) => {
-      setCurrentOffer(responses[0].data as SingleOffer);
-      setNearbyOffers(responses[1].data as OffersList[]);
-      setCurrentOfferComments(responses[2].data as IReview[]);
+      setCurrentOffer(responses[0].data as TSingleOffer);
+      setNearbyOffers(responses[1].data as TOffersList[]);
+      setCurrentOfferComments(responses[2].data as TReview[]);
     }))
       .catch(() => {
         navigate('/404');
       });
   },[ navigate, parsedId]);
 
-  const nearbyOnTheMap = nearbyOffers.slice(0, 3);
-  const current = offersList.find((elem) => elem.id === parsedId) ;
-
-  if (current) {
-    nearbyOnTheMap.push(current);
-  }
-  const nearbyThree = nearbyOnTheMap.slice(0, 3);
+  const {favoriteStatus, handleFavClick} = useFavoriteStatus({ id, isFavorite});
 
   return (
     <div className="page">
@@ -83,7 +86,12 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {currentOffer?.title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button className={cn('offer__bookmark-button button',
+                  {'offer__bookmark-button--active' : favoriteStatus}
+                )}
+                type="button"
+                onClick={handleFavClick}
+                >
                   <svg className={`offer__bookmark-icon ${styles.bookmark__icon}`}>
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -151,25 +159,16 @@ function OfferScreen(): JSX.Element {
                   <p className="offer__text">
                     {currentOffer?.description}
                   </p>
-                  {/* <p className="offer__text">
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city
-                    comes to rest in this alley flowery and colorful.
-                  </p> */}
                 </div>
               </div>
               <section className="offer__reviews reviews">
-
-
-                {currentOfferComments && <Reviews reviewsNumber={currentOfferComments.length} comments={currentOfferComments}/>}
-
+                {currentOfferComments && <Reviews comments={currentOfferComments}/>}
                 {isCommentSectionShown && <CommentForm setCurrentOfferComments={setCurrentOfferComments}/>}
-
               </section>
             </div>
           </div>
           <section className="offer__map map">
-            {nearbyOffers.length !== 0 && <Map offers={nearbyOnTheMap} selectedPoint={undefined} />}
+            {nearbyOffers.length !== 0 && <Map offers={nearbyOnTheMap} selectedPoint={current} />}
           </section>
         </section>
         <div className="container">

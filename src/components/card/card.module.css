@@ -1,4 +1,19 @@
 .place_card__image {
-  width:"260px";
-  height:"200px";
+  width: 260px;
+  height: 200px;
+}
+
+.place_card__fav {
+  stroke: #4481c3;
+  fill: #4481c3;
+}
+
+.place_card__imagefav {
+  width: 150px;
+  height: 110px;
+}
+
+.place_card__bookmark-icon {
+  width : 18px;
+  height: 19px;
 }

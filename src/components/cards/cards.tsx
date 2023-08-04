@@ -1,15 +1,15 @@
 import Card from '../card/card';
-import { OffersList } from '../../types/offers-list';
+import { TOffersList } from '../../types/offers-list';
 
-type CardsProps = {
-  cardsList: OffersList[];
+type TCardsProps = {
+  cardsList: TOffersList[];
   onListItemHover: (listItemId: string) => void;
 };
 
-function Cards({ cardsList , onListItemHover }: CardsProps) {
+function Cards({ cardsList , onListItemHover }: TCardsProps) {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {cardsList.map((elem) => <Card key={elem.id} isOfferPage offer={elem} onListItemHover={onListItemHover} />)}
+      {cardsList.map((elem) => <Card isFavPage={false} isMainPage key={elem.id} isOfferPage={false} offer={elem} onListItemHover={onListItemHover} />)}
     </div>
   );
 }

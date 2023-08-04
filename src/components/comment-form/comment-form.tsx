@@ -1,26 +1,26 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import Stars from '../stars/stars';
 import { useParams } from 'react-router-dom';
 import { getToken } from '../../services/token';
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 
 import useCommentSubmission from '../../hooks/use-comments';
 
-type setNewCommentsProps = {
-  setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
+type TCommentFormProps = {
+  setCurrentOfferComments : React.Dispatch<React.SetStateAction<TReview[] | undefined>>;
 }
 
-function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Element {
+function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Element {
   const parsedId = useParams().id || '';
   const token = getToken();
 
-  const {form , onStarChangeHandler , textChangeHandler , submitComment} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
-  const isCommentSubmitDisabled = form.comment.length < 50;
+  const {form , onStarChangeHandler , textChangeHandler , submitCommentHandler} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
+  const isCommentSubmitAvailable = form.comment.length > 50 && form.rating !== 0;
 
-  const submitCommentHandler = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    submitComment();
-  };
+  // const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
+  //   evt.preventDefault();
+  //   submitComment();
+  // } , [submitComment]);
 
   return (
     <form
@@ -34,7 +34,7 @@ function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Ele
         Your review
       </label>
 
-      <Stars onStarChange={onStarChangeHandler}/>
+      <Stars onStarChange={onStarChangeHandler} currentRating={form.rating}/>
 
       <textarea
         maxLength={300}
@@ -54,7 +54,7 @@ function CommentForm({ setCurrentOfferComments } : setNewCommentsProps): JSX.Ele
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {isCommentSubmitDisabled}
+          disabled = {!isCommentSubmitAvailable}
         >
           Submit
         </button>

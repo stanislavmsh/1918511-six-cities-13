@@ -1,36 +1,35 @@
-import { useState } from 'react';
+import { useState , useCallback , FormEvent } from 'react';
 import { BACKEND_URL } from '../const';
-import { IReview } from '../types/review';
+import { TReview } from '../types/review';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
-type CommentFormProps = {
+type TCommentFormProps = {
   rating: number;
   comment: string;
 };
 
-type useCommentSubmissionProps = {
+type TUseCommentSubmissionProps = {
   parsedId: string;
   token: string;
-  setCurrentOfferComments : React.Dispatch<React.SetStateAction<IReview[] | undefined>>;
+  setCurrentOfferComments : React.Dispatch<React.SetStateAction<TReview[] | undefined>>;
 }
 
 
-function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useCommentSubmissionProps) {
-  const [form , setForm] = useState<CommentFormProps>({ rating: 0 , comment: ''});
+function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUseCommentSubmissionProps) {
+  const [form , setForm] = useState<TCommentFormProps>({ rating: 0 , comment: ''});
 
-  const onStarChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevState) => ({
-      ...prevState,
-      rating: Number(evt.target.value),
-    }));
-  };
+  const onStarChangeHandler = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({...form , rating: Number(evt.target.value)});
+  }, [form]);
 
-  const textChangeHandler = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({ ...form, comment: evt.target.value });
-  };
+  const textChangeHandler = useCallback((evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setForm({...form, comment: evt.target.value});
+  }, [form]);
 
-  const submitComment = () => {
-    axios.post<IReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
+  const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    axios.post<TReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
       headers: {
         'x-token': token
       }
@@ -50,14 +49,14 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : useC
       }
       )
       .catch(() => {
-        throw new Error('Comment Sending Error');
+        toast.warn('comment sending error');
       }
       );
 
 
-  };
+  },[form , parsedId , setCurrentOfferComments , token]);
 
-  return { form, onStarChangeHandler, textChangeHandler, submitComment };
+  return { form, onStarChangeHandler, textChangeHandler, submitCommentHandler };
 }
 
 

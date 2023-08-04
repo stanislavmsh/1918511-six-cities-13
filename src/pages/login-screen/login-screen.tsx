@@ -5,10 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/user-process/user-process.action';
 import { AppRoute, AuthStatus } from '../../const';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
+import { toast } from 'react-toastify';
 
 function LoginScreen(): JSX.Element {
-
-
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
@@ -20,10 +19,19 @@ function LoginScreen(): JSX.Element {
     return <Navigate to={AppRoute.Root}/>;
   }
 
+  const regexEmail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
+  const regexPassword = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
+
   const handleSubmit = (evt : FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (usernameRef.current !== null && passwordRef.current !== null) {
+
+      if(!regexEmail.test(usernameRef.current.value) || !regexPassword.test(passwordRef.current.value)) {
+        toast.warn('Invalid login form');
+        return;
+      }
+
       dispatch(loginAction({
         login: usernameRef.current.value,
         password: passwordRef.current.value,
@@ -31,7 +39,6 @@ function LoginScreen(): JSX.Element {
       );
     }
   };
-
 
   return (
     <div className="page page--gray page--login">

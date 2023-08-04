@@ -1,11 +1,18 @@
-import { IReview } from '../../types/review';
+import { TReview } from '../../types/review';
 
-type ReviewProps = {
-  review: IReview;
+type TReviewProps = {
+  review: TReview;
 }
 
 
-function Review({review} : ReviewProps): JSX.Element {
+function Review({review} : TReviewProps): JSX.Element {
+
+  const humanizedDate = new Date(review.date).toLocaleString('en-US',
+    {
+      year: 'numeric',
+      month: 'long'
+    });
+
   return (
 
     <li key={review.id} className="reviews__item">
@@ -31,8 +38,8 @@ function Review({review} : ReviewProps): JSX.Element {
         <p className="reviews__text">
           {review.comment}
         </p>
-        <time className="reviews__time" dateTime="2019-04-24">
-                        April 2019
+        <time className="reviews__time" dateTime={review.date}>
+          {humanizedDate}
         </time>
       </div>
     </li>

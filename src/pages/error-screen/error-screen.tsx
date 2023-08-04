@@ -4,7 +4,6 @@ import { fetchOffersAction } from '../../store/offers-data/offers-data.action';
 
 function ErrorScreen(): JSX.Element {
   const dispatch = useAppDispatch();
-
   return (
     <>
       <p className="error__text">Не удалось загрузить</p>

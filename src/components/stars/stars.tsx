@@ -1,29 +1,63 @@
 import React from 'react';
-const RATING_STARS_AMOUNT = [1, 2, 3, 4, 5];
 
-type StarsProps = {
+const RatingStarsData = [
+  {
+    value: '1',
+    id: '1-star',
+    title: 'terribly',
+  },
+  {
+    value: '2',
+    id: '2-stars',
+    title: 'badly',
+  },
+  {
+    value: '3',
+    id: '3-stars',
+    title: 'not bad',
+  },
+  {
+    value: '4',
+    id: '4-stars',
+    title: 'good',
+  },
+  {
+    value: '5',
+    id: '5-stars',
+    title: 'perfect',
+  },
+
+];
+
+type TStarsProps = {
   onStarChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  currentRating: number;
 }
 
-function Stars ({onStarChange} : StarsProps) : JSX.Element {
+function Stars ({onStarChange, currentRating} : TStarsProps) : JSX.Element {
+
+  const isRatingSelected = (value : string) : boolean => currentRating === Number(value);
+
   return (
     <div className="reviews__rating-form form__rating">
 
-      {RATING_STARS_AMOUNT.map((elem) =>
+      {RatingStarsData.map((elem) =>
         (
-          <React.Fragment key={elem}>
+          <React.Fragment key={`${elem.id}xxxstarxxx`}>
             <input
               onChange={onStarChange}
               className="form__rating-input visually-hidden"
               name="rating"
-              value={`${elem}`}
-              id={`${elem}-stars`}
+              value={elem.value}
+              id={elem.id}
               type="radio"
+              checked={isRatingSelected(elem.value)}
+
             />
             <label
-              htmlFor={`${elem}-stars`}
+              htmlFor={elem.id}
               className="reviews__rating-label form__rating-label"
-              title="badly"
+              title={elem.title}
             >
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>

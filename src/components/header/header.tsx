@@ -1,29 +1,35 @@
 import { Link} from 'react-router-dom';
-import styles from './header.module.css';
 import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/user-process/user-process.action';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
+import { getFavorites } from '../../store/offers-data/offers-data.selectors';
+import { useCallback } from 'react';
+import styles from './header.module.css';
+
 
 function Header(): JSX.Element {
   const userStatus = useAppSelector(getAuthStatus);
   const dispatch = useAppDispatch();
+  const favList = useAppSelector(getFavorites);
 
   const isLoggedIn = userStatus === AuthStatus.Auth;
 
-  const handleLogout = () => {
+  const handleLogoutClick = useCallback(() => {
     if(isLoggedIn) {
       dispatch(logoutAction());
     }
-  };
-
+  },[dispatch , isLoggedIn]);
 
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link" to={AppRoute.Root}>
+            <Link
+              className="header__logo-link"
+              to={AppRoute.Root}
+            >
               <img
                 className={`header__logo ${styles.header__logo}`}
                 src="img/logo.svg"
@@ -40,11 +46,11 @@ function Header(): JSX.Element {
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
+                    <span className="header__favorite-count">{favList.length}</span>
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link onClick={handleLogout} className="header__nav-link" to="/">
+                  <Link onClick={handleLogoutClick} className="header__nav-link" to="/">
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>

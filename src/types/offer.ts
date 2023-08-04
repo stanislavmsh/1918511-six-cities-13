@@ -1,25 +1,25 @@
-import { Location , City } from './offers-list';
+import { TLocation , TCity } from './offers-list';
 
-export type SingleOffer = {
+export type TSingleOffer = {
   id: string;
   title: string;
   type: string;
   price: number;
-  city: City;
-  location: Location;
+  city: TCity;
+  location: TLocation;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
   description: string;
   bedrooms: number;
   goods: string[];
-  host: Host;
+  host: THost;
   images: string[];
   maxAdults: number;
 
 };
 
-export type Host = {
+export type THost = {
   name: string;
   avatarUrl: string;
   isPro: boolean;

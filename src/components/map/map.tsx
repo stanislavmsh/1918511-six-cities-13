@@ -1,15 +1,15 @@
 import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
-import useMap from '../../hooks/use-map';
-import { OffersList} from '../../types/offers-list';
-import { SingleOffer } from '../../types/offer';
+import { TOffersList} from '../../types/offers-list';
+import { TSingleOffer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import useMap from '../../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 import style from './map.module.css';
 
-type MapProps = {
-  offers: OffersList[] | SingleOffer[];
-  selectedPoint: OffersList | undefined;
+type TMapProps = {
+  offers: TOffersList[] | TSingleOffer[];
+  selectedPoint: TOffersList | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -24,7 +24,7 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map ({offers ,selectedPoint}: MapProps) : JSX.Element {
+function Map ({offers ,selectedPoint}: TMapProps) : JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, offers[0].city);
   useEffect(() => {
