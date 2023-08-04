@@ -2,32 +2,32 @@ import { SortingOption } from '../../const';
 
 import { cityNameChange, formFavStatus, offersData , sortOffers, sortOffersByCity } from './offers-data.slice';
 import { offersMock } from './offers.mock';
-import MockAdapter from 'axios-mock-adapter';
-import { createAPI } from '../../services/api';
+// import MockAdapter from 'axios-mock-adapter';
+// import { createAPI } from '../../services/api';
 
-import { fetchOffersAction } from './offers-data.action';
+import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 import { store } from '..';
-import { beforeAll } from 'vitest';
+// import { beforeAll } from 'vitest';
 
 
-const getListResponse = {
-  someOffers : {
-    offersMock
-  }
-};
+// const getListResponse = {
+//   someOffers : {
+//     offersMock
+//   }
+// };
 
 
-const mockNetworkResponse = () => {
-  const mock = new MockAdapter(createAPI());
-  mock.onGet().reply(200, getListResponse);
-  console.log('mockNetwork START');
-};
+// const mockNetworkResponse = () => {
+//   const mock = new MockAdapter(createAPI());
+//   mock.onGet().reply(200, getListResponse);
+//   console.log('mockNetwork START');
+// };
 
 
 describe('offersData reducers', () => {
-  beforeAll(() => {
-    mockNetworkResponse();
-  });
+  // beforeAll(() => {
+  //   mockNetworkResponse();
+  // });
 
 
   const initialState = {
@@ -99,6 +99,16 @@ describe('offersData reducers', () => {
     expect(result.type).toBe('data/fetchOffers/fulfilled');
     expect(state.offers).toEqual(offersFromServer);
     expect(stateCityName).toEqual('Paris');
+
+  });
+
+  test('should fetch favorites list from server',async () => {
+    const result = await store.dispatch(fetchFavAction());
+    const favsFromServer = result.payload;
+    const state = store.getState().OFFERS.favorites;
+    expect(result.type).toBe('data/fetchFavs/rejected');
+    expect(favsFromServer).toEqual(undefined);
+
 
   });
 

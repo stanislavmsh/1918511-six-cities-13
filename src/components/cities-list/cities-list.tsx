@@ -2,7 +2,7 @@ import { CityName } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCityName } from '../../store/offers-data/offers-data.selectors';
 import { cityNameChange, sortOffersByCity } from '../../store/offers-data/offers-data.slice';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import cn from 'classnames';
 import style from './cities-list.module.css';
 
@@ -34,6 +34,7 @@ function CitiesList() {
     </section>
   );
 }
-export default CitiesList;
+// export default CitiesList;
 
+export const MemoizedCitiesList = React.memo(CitiesList);
 

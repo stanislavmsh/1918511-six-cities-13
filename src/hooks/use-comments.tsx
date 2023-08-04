@@ -20,12 +20,20 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUse
   const [form , setForm] = useState<TCommentFormProps>({ rating: 0 , comment: ''});
 
   const onStarChangeHandler = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({...form , rating: Number(evt.target.value)});
-  }, [form]);
+    setForm((prevState) => ({
+      ...prevState,
+      rating: Number(evt.target.value),
+    })
+    );
+  }, []);
 
   const textChangeHandler = useCallback((evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({...form, comment: evt.target.value});
-  }, [form]);
+    setForm((prevState) => ({
+      ...prevState,
+      comment: evt.target.value,
+    })
+    );
+  }, []);
 
   const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
