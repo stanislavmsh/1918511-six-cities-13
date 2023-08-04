@@ -2,31 +2,32 @@ import { SortingOption } from '../../const';
 
 import { cityNameChange, formFavStatus, offersData , sortOffers, sortOffersByCity } from './offers-data.slice';
 import { offersMock } from './offers.mock';
-// import MockAdapter from 'axios-mock-adapter';
-// import { createAPI } from '../../services/api';
+import MockAdapter from 'axios-mock-adapter';
+import { createAPI } from '../../services/api';
+
+import { fetchOffersAction } from './offers-data.action';
+import { store } from '..';
+import { beforeAll } from 'vitest';
 
 
-// import { store } from '..';
-// import { beforeAll } from 'vitest';
-
-// const api = createAPI();
-// const getListResponse = {
-//   offer: {
-//     offersMock
-//   }
-// };
+const getListResponse = {
+  someOffers : {
+    offersMock
+  }
+};
 
 
-// const mockNetworkResponse = () => {
-//   const mock = new MockAdapter(api);
-//   mock.onGet('/offers/Paris').reply(200, getListResponse);
-// };
+const mockNetworkResponse = () => {
+  const mock = new MockAdapter(createAPI());
+  mock.onGet().reply(200, getListResponse);
+  console.log('mockNetwork START');
+};
 
 
 describe('offersData reducers', () => {
-  // beforeAll(() => {
-  //   mockNetworkResponse();
-  // });
+  beforeAll(() => {
+    mockNetworkResponse();
+  });
 
 
   const initialState = {
@@ -88,24 +89,18 @@ describe('offersData reducers', () => {
     );
   });
 
-  // test('should fetch offers list , sort it by specific city and put city name to state' , async () => {
+  test('should fetch offers list , sort it by specific city and put city name to state' , async () => {
+    const result = await store.dispatch(fetchOffersAction());
+    const offersFromServer = result.payload;
+    const stateCityName = store.getState().OFFERS.cityName;
+    const state = store.getState().OFFERS;
 
+    // expect(offersFromServer.someOffers).toEqual(getListResponse.someOffers);
+    expect(result.type).toBe('data/fetchOffers/fulfilled');
+    expect(state.offers).toEqual(offersFromServer);
+    expect(stateCityName).toEqual('Paris');
 
-  //   const result = await store.dispatch(fetchOffersAction(CityName.Paris));
-  //   const serverOffers = result.payload.data;
-  //   const serverCityName = result.payload.city;
-  //   // console.log(serverCityName);
-  //   const stateCityName = store.getState().OFFERS.cityName;
-
-  //   expect(result.type).toBe('data/fetchOffers/fulfilled');
-  //   // expect(offersFromServer).toEqual(getListResponse.offer);
-  //   const state = store.getState().OFFERS;
-  //   console.log(state.offers.length);
-  //   console.log(serverOffers.length);
-  //   // expect(state.offers).toEqual({ serverOffers });
-  //   expect(stateCityName).toEqual(CityName.Paris);
-
-  // });
+  });
 
 
 });
