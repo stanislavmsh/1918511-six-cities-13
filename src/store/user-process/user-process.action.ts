@@ -5,7 +5,7 @@ import { APIRoute , AppRoute } from '../../const';
 import { redirectToRoute } from '.././action';
 import {TAuthData} from '../../types/auth-data';
 import {TUserData} from '../../types/user-data';
-import { dropToken, saveToken } from '../../services/token';
+import { dropToken, saveUserInfo } from '../../services/token';
 import { fetchFavAction, fetchOffersAction } from '../offers-data/offers-data.action';
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
@@ -26,8 +26,8 @@ export const loginAction = createAsyncThunk<void, TAuthData, {
 }>(
   'user/login',
   async ({login: email , password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<TUserData>(APIRoute.Login, {email, password});
-    saveToken(token);
+    const {data: {token , email : emailFromServer }} = await api.post<TUserData>(APIRoute.Login, {email, password});
+    saveUserInfo(token , emailFromServer);
     dispatch(redirectToRoute(AppRoute.Root));
     dispatch(fetchOffersAction());
     dispatch(fetchFavAction());

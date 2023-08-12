@@ -6,12 +6,14 @@ import { getToken } from '../services/token';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formFavStatus } from '../store/offers-data/offers-data.slice';
+import { formFavStatus, sortOffersByCity } from '../store/offers-data/offers-data.slice';
 import axios, { AxiosResponse } from 'axios';
+import { getCityName } from '../store/offers-data/offers-data.selectors';
 
 type TUseFavoriteStatusProps = {
   id: string;
   isFavorite: boolean;
+  isMainPage?: boolean;
 };
 
 type TFavResponseData = {
@@ -19,8 +21,10 @@ type TFavResponseData = {
   id: string;
 }
 
-const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
+const useFavoriteStatus = ({ id, isFavorite , isMainPage = false }: TUseFavoriteStatusProps) => {
   const [favoriteStatus, setFavoriteStatus] = useState<boolean>(isFavorite);
+
+  const currentCity = useAppSelector(getCityName);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,6 +44,7 @@ const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
       return navigate(AppRoute.Login);
     }
 
+
     axios
       .post(`${BACKEND_URL}/favorite/${id}/${status}`, {}, {
         headers: {
@@ -49,11 +54,16 @@ const useFavoriteStatus = ({ id, isFavorite }: TUseFavoriteStatusProps) => {
       .then((response : AxiosResponse<TFavResponseData>) => {
         setFavoriteStatus(response.data.isFavorite);
         dispatch(formFavStatus({currentId: response.data.id , favStatus: response.data.isFavorite}));
+        if (!isMainPage) {
+          dispatch(sortOffersByCity(currentCity));
+        }
       })
       .catch(() => {
         toast.warn('Error fav status');
       });
-  }, [dispatch, id, isUserAuth, navigate, status, token]);
+
+
+  }, [dispatch, id, isUserAuth, navigate, status, token, currentCity , isMainPage]);
 
   return { favoriteStatus, handleFavClick };
 };

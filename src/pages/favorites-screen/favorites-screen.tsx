@@ -1,15 +1,25 @@
 import Header from '../../components/header/header';
 import Favorites from '../../components/favorites/favorites';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import styles from './favorites-screen.module.css';
-import { getFavorites } from '../../store/offers-data/offers-data.selectors';
+import { getCityName, getFavorites } from '../../store/offers-data/offers-data.selectors';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-
+import { useCallback } from 'react';
+import { sortOffersByCity } from '../../store/offers-data/offers-data.slice';
 import cn from 'classnames';
 
 function FavoritesScreen(): JSX.Element {
+
+  const currentCityName = useAppSelector(getCityName);
+
+  const dispatch = useAppDispatch();
+
+  const handleFooterClick = useCallback(() => {
+    dispatch(sortOffersByCity(currentCityName));
+  },[dispatch , currentCityName]);
+
   const favList = useAppSelector(getFavorites);
   const isNotEmpty = favList.length > 0;
 
@@ -25,6 +35,7 @@ function FavoritesScreen(): JSX.Element {
             className="footer__logo"
             src="img/logo.svg"
             alt="6 cities logo"
+            onClick={handleFooterClick}
           />
         </Link>
       </footer>

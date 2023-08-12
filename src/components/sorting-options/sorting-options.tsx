@@ -55,7 +55,6 @@ function SortingOptions() : JSX.Element {
   );
 }
 
-// export default SortingOptions;
 
 const MemoizedSortingOptions = React.memo(SortingOptions);
 

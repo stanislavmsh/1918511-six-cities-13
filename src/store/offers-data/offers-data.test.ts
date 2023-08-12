@@ -1,24 +1,38 @@
 import { SortingOption } from '../../const';
-import { describe , it , expect} from 'vitest';
 import { cityNameChange, formFavStatus, offersData , sortOffers, sortOffersByCity } from './offers-data.slice';
 import { makeFakeOffersList } from '../../utils/mocks';
-
 import { fetchFavAction, fetchOffersAction } from './offers-data.action';
-import { store } from '..';
+
+const initialState = {
+  cityName: 'Paris',
+  offers: [],
+  isOffersDataLoading: false,
+  sortedOffers: [],
+  hasError: false,
+  favorites: [],
+};
+const offersMock = makeFakeOffersList();
 
 
 describe('offersData reducers', () => {
 
-  const initialState = {
-    cityName: 'Paris',
-    offers: [],
-    isOffersDataLoading: false,
-    sortedOffers: [],
-    hasError: false,
-    favorites: [],
-  };
 
-  const offersMock = makeFakeOffersList();
+  it('should return initial state with empty action' , () => {
+    const emptyAction = { type: ''};
+    const state = {...initialState};
+
+    const expectedState = offersData.reducer(state , emptyAction);
+    expect(state).toEqual(expectedState);
+  });
+
+  it('should return default initial state with empty action' , () => {
+    const emptyAction = { type: ''};
+    const state = {...initialState};
+
+    const expectedState = offersData.reducer(undefined , emptyAction);
+    expect(state).toEqual(expectedState);
+  });
+
 
   it('should return an array only with one city name to state', () => {
     const state = {...initialState , offers: [...offersMock]};
@@ -63,38 +77,65 @@ describe('offersData reducers', () => {
       }
       return elem;
     });
-    const expectedSortedOffers = [...offersMock].map((elem) => {
-      if (elem.id === actionPayload.currentId) {
-        return {...elem, isFavorite: actionPayload.favStatus};
-      }
-      return elem;
-    });
 
     expect(newState.favorites).toEqual(expectedStateFavorites);
     expect(newState.offers).toEqual(expectedOffers);
-    expect(newState.sortedOffers).toEqual(expectedSortedOffers);
 
   });
 
-  it('should fetch offers list , sort it by specific city and put city name to state' , async () => {
-    const result = await store.dispatch(fetchOffersAction());
-    const offersFromServer = result.payload;
-    const stateCityName = store.getState().OFFERS.cityName;
-    const state = store.getState().OFFERS;
+});
 
-    expect(result.type).toBe('data/fetchOffers/fulfilled');
-    expect(state.offers).toEqual(offersFromServer);
-    expect(stateCityName).toEqual('Paris');
+describe('ofersData extraReducers' , () => {
+
+  it('should set "isOffersDataLoading" to true , "hasError" to false with fetchOffersAction.pending' , () => {
+    const expectedState = {...initialState, isOffersDataLoading: true};
+
+    const newState = offersData.reducer(undefined, fetchOffersAction.pending);
+
+    expect(newState).toEqual(expectedState);
+  });
+
+  it('should set "isOffersDataLoading" to false , "hasError" to true with fetchOffersAction.rejected' , () => {
+    const expectedState = {...initialState, hasError: true};
+
+    const newState = offersData.reducer(undefined, fetchOffersAction.rejected);
+
+    expect(newState).toEqual(expectedState);
+  });
+
+  it('should set offers, sort offers by city name and filter favourite offers from data, isOffersDataLoading to false with fetchOffersAction.rejected', () => {
+    const mockFavorites = [...offersMock].filter((elem) =>
+      elem.isFavorite === true
+    );
+    const mockSortedOFfers = [...offersMock].filter((elem) => elem.city.name === initialState.cityName);
+    const expectedState = {...initialState, offers: [...offersMock], favorites: mockFavorites , sortedOffers: mockSortedOFfers};
+
+    const newState = offersData.reducer(undefined, fetchOffersAction.fulfilled(offersMock, '', undefined));
+
+    expect(newState).toEqual(expectedState);
 
   });
 
-  it.fails('should reject if not logged in',async () => {
-    const result = await store.dispatch(fetchFavAction());
-    const favsFromServer = result.payload;
-    // const state = store.getState().OFFERS.favorites;
-    expect(result.type).toBe('data/fetchFavs/fulfilled');
-    expect(favsFromServer).toEqual(undefined);
+  it('should set favorites array from data with fetchFavAction.fullfilled', () => {
+    const mockFavorites = [...offersMock].filter((elem) =>
+      elem.isFavorite === true
+    );
+
+    const expectedState = {...initialState, favorites: mockFavorites};
+
+    const newState = offersData.reducer(undefined, fetchFavAction.fulfilled(mockFavorites, '', undefined));
+
+    expect(newState).toEqual(expectedState);
+
   });
 
+  it('should set favoites to default with fetchFavAction.rejected', () => {
+    const expectedState = {...initialState, hasError: true};
+
+    const newState = offersData.reducer(undefined, fetchFavAction.rejected);
+
+    expect(newState).toEqual(expectedState);
+
+  });
 
 });

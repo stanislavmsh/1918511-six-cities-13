@@ -3,8 +3,6 @@ import { useState , useCallback } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getCityName } from '../../store/offers-data/offers-data.selectors';
 import Map from '../map/map';
-// import Cards from '../cards/cards';
-// import SortingOptions from '../sorting-options/sorting-options';
 import MemoizedSortingOptions from '../sorting-options/sorting-options';
 import MemoizedCards from '../cards/cards';
 

@@ -34,7 +34,6 @@ function CitiesList() {
     </section>
   );
 }
-// export default CitiesList;
 
 export const MemoizedCitiesList = React.memo(CitiesList);
 

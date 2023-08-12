@@ -1,4 +1,3 @@
-// import Card from '../card/card';
 import React from 'react';
 import MemoizedCard from '../card/card';
 import { TOffersList } from '../../types/offers-list';
@@ -15,9 +14,6 @@ function Cards({ cardsList , onListItemHover }: TCardsProps) {
     </div>
   );
 }
-
-
-// export default Cards;
 
 const MemoizedCards = React.memo(Cards);
 

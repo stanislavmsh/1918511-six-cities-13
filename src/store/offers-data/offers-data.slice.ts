@@ -62,6 +62,9 @@ export const offersData = createSlice({
         state.offers = action.payload;
         state.isOffersDataLoading = false;
         state.sortedOffers = action.payload.filter((elem) => elem.city.name === state.cityName);
+        state.favorites = state.offers.filter((elem) =>
+          elem.isFavorite === true
+        );
       })
       .addCase(fetchFavAction.fulfilled , (state, action) => {
         state.favorites = action.payload;
@@ -74,6 +77,7 @@ export const offersData = createSlice({
       })
       .addCase(fetchFavAction.rejected, (state) => {
         state.favorites = [];
+        state.hasError = true;
       });
   }
 });

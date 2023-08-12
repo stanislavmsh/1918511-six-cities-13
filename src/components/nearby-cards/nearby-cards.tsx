@@ -1,4 +1,3 @@
-// import Card from '../card/card';
 import MemoizedCard from '../card/card';
 import { TOffersList } from '../../types/offers-list';
 

@@ -1,6 +1,12 @@
 import {system , datatype, lorem} from 'faker';
 import { TOffersList } from '../types/offers-list';
 import { CityName } from '../const';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { createAPI } from '../services/api';
+import { State } from '../types/state';
+
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createAPI>, Action>
 
 const citiesNames = Object.values(CityName);
 
@@ -30,3 +36,5 @@ export const makeFakeOffersList = (): TOffersList[] => (
     'rating': 4.2
   })
   ));
+
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
