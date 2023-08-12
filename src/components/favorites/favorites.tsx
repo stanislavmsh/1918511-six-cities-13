@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { TOffersList } from '../../types/offers-list';
-import Card from '../card/card';
+import MemoizedCard from '../card/card';
 
 type TFavotiresProps = {
   favList: TOffersList[];
@@ -33,7 +33,7 @@ function Favorites ({favList} : TFavotiresProps) : JSX.Element {
                   {favList
                     .filter((offer) => offer.city.name === cityName)
                     .map((elem) => (
-                      <Card
+                      <MemoizedCard
                         key={`${elem.id}-favs`}
                         offer={elem}
                         isOfferPage={false}

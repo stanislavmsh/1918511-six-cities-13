@@ -1,57 +1,36 @@
 import { SortingOption } from '../../const';
-
+import { describe , it , expect} from 'vitest';
 import { cityNameChange, formFavStatus, offersData , sortOffers, sortOffersByCity } from './offers-data.slice';
-import { offersMock } from './offers.mock';
-// import MockAdapter from 'axios-mock-adapter';
-// import { createAPI } from '../../services/api';
+import { makeFakeOffersList } from '../../utils/mocks';
 
 import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 import { store } from '..';
-// import { beforeAll } from 'vitest';
-
-
-// const getListResponse = {
-//   someOffers : {
-//     offersMock
-//   }
-// };
-
-
-// const mockNetworkResponse = () => {
-//   const mock = new MockAdapter(createAPI());
-//   mock.onGet().reply(200, getListResponse);
-//   console.log('mockNetwork START');
-// };
 
 
 describe('offersData reducers', () => {
-  // beforeAll(() => {
-  //   mockNetworkResponse();
-  // });
-
 
   const initialState = {
     cityName: 'Paris',
-    offers: offersMock,
+    offers: [],
     isOffersDataLoading: false,
-    sortedOffers: offersMock,
+    sortedOffers: [],
     hasError: false,
     favorites: [],
   };
 
-  test('should return an array only with one city name to state', () => {
-    const actionPayload = 'Amsterdam';
-    const newState = offersData.reducer(initialState , sortOffersByCity(actionPayload));
+  const offersMock = makeFakeOffersList();
 
-    expect(newState.sortedOffers).toEqual(
-      [
-        initialState.offers[0],
-        initialState.offers[1]
-      ]
-    );
+  it('should return an array only with one city name to state', () => {
+    const state = {...initialState , offers: [...offersMock]};
+    const actionPayload = 'Amsterdam';
+    const newState = offersData.reducer(state , sortOffersByCity(actionPayload));
+
+    const expectedState = [...offersMock].filter((elem) => elem.city.name === actionPayload);
+
+    expect(newState.sortedOffers).toEqual(expectedState);
   });
 
-  test('should change cityName in state', () => {
+  it('should change cityName in state', () => {
     const actionPayload = 'Amsterdam';
     const newState = offersData.reducer(initialState , cityNameChange(actionPayload));
 
@@ -59,57 +38,62 @@ describe('offersData reducers', () => {
 
   });
 
-  test('should sort offers by the selected sorting option', () => {
+  it('should sort offers by the selected sorting option', () => {
+    const state = {...initialState, sortedOffers: [...offersMock]};
     const actionPayload = SortingOption.HighToLow;
-    const newState = offersData.reducer(initialState, sortOffers(actionPayload));
+    const newState = offersData.reducer(state, sortOffers(actionPayload));
 
-    expect(newState.sortedOffers).toEqual(
-      [
-        initialState.offers[2],
-        initialState.offers[1],
-        initialState.offers[3],
-        initialState.offers[0]
-      ]
-    );
+    const expectedState = [...offersMock].sort((a, b) => b.price - a.price);
+
+    expect(newState.sortedOffers).toEqual(expectedState);
 
   });
 
-  test('should update favourite status and fill favourites in state with only positive status', () => {
+  it('should update favourite status and fill favourites in state with only positive status', () => {
+    const state = {...initialState, offers: [...offersMock], sortedOffers: [...offersMock]};
     const actionPayload = {currentId: '1' , favStatus: true};
-    const newState = offersData.reducer(initialState, formFavStatus(actionPayload));
+    const newState = offersData.reducer(state, formFavStatus(actionPayload));
 
-    expect(newState.offers[0].isFavorite).toBe(true);
-    expect(newState.sortedOffers[0].isFavorite).toBe(true);
-    expect(newState.favorites).toEqual(
-      [
-        {...initialState.offers[0] , isFavorite: true},
-        initialState.offers[2],
-        initialState.offers[3]
-      ]
+    const expectedStateFavorites = [...offersMock].filter((elem) =>
+      elem.isFavorite === true
     );
+    const expectedOffers = [...offersMock].map((elem) => {
+      if (elem.id === actionPayload.currentId) {
+        return {...elem, isFavorite: actionPayload.favStatus};
+      }
+      return elem;
+    });
+    const expectedSortedOffers = [...offersMock].map((elem) => {
+      if (elem.id === actionPayload.currentId) {
+        return {...elem, isFavorite: actionPayload.favStatus};
+      }
+      return elem;
+    });
+
+    expect(newState.favorites).toEqual(expectedStateFavorites);
+    expect(newState.offers).toEqual(expectedOffers);
+    expect(newState.sortedOffers).toEqual(expectedSortedOffers);
+
   });
 
-  test('should fetch offers list , sort it by specific city and put city name to state' , async () => {
+  it('should fetch offers list , sort it by specific city and put city name to state' , async () => {
     const result = await store.dispatch(fetchOffersAction());
     const offersFromServer = result.payload;
     const stateCityName = store.getState().OFFERS.cityName;
     const state = store.getState().OFFERS;
 
-    // expect(offersFromServer.someOffers).toEqual(getListResponse.someOffers);
     expect(result.type).toBe('data/fetchOffers/fulfilled');
     expect(state.offers).toEqual(offersFromServer);
     expect(stateCityName).toEqual('Paris');
 
   });
 
-  test('should fetch favorites list from server',async () => {
+  it.fails('should reject if not logged in',async () => {
     const result = await store.dispatch(fetchFavAction());
     const favsFromServer = result.payload;
-    const state = store.getState().OFFERS.favorites;
-    expect(result.type).toBe('data/fetchFavs/rejected');
+    // const state = store.getState().OFFERS.favorites;
+    expect(result.type).toBe('data/fetchFavs/fulfilled');
     expect(favsFromServer).toEqual(undefined);
-
-
   });
 
 

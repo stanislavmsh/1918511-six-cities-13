@@ -1,6 +1,5 @@
 import OffersNotFound from '../offers-not-found/offers-not-found';
 import OffersFound from '../offers-found/offers-found';
-// import CitiesList from '../cities-list/cities-list';
 import { MemoizedCitiesList } from '../cities-list/cities-list';
 import { useAppSelector } from '../../hooks';
 import { getSortedOffers } from '../../store/offers-data/offers-data.selectors';

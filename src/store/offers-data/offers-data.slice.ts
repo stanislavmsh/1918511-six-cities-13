@@ -46,13 +46,6 @@ export const offersData = createSlice({
         return elem;
       });
 
-      state.sortedOffers = state.sortedOffers.map((elem) => {
-        if (elem.id === action.payload.currentId) {
-          return {...elem, isFavorite: action.payload.favStatus};
-        }
-        return elem;
-      });
-
       state.favorites = state.offers.filter((elem) =>
         elem.isFavorite === true
       );
@@ -68,7 +61,6 @@ export const offersData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isOffersDataLoading = false;
-        // state.cityName = action.payload.city;
         state.sortedOffers = action.payload.filter((elem) => elem.city.name === state.cityName);
       })
       .addCase(fetchFavAction.fulfilled , (state, action) => {

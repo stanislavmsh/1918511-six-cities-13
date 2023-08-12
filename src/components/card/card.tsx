@@ -1,3 +1,4 @@
+import React from 'react';
 import { TOffersList } from '../../types/offers-list';
 import { MouseEvent, useCallback} from 'react';
 import { Link } from 'react-router-dom';
@@ -97,4 +98,8 @@ function Card(props: TCardProps): JSX.Element {
   );
 }
 
-export default Card;
+
+const MemoizedCard = React.memo(Card);
+
+export default MemoizedCard;
+

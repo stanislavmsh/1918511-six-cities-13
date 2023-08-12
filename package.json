@@ -7,11 +7,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx",
     "preview": "vite preview",
-    "test": "vitest --passWithNoTests",
-    "jest": "jest",
-    "jest:smoke": "jest .smoke.test.js",
-    "jest:dev": "jest --config=dev.jest.config.js",
-    "jest:prod": "jest --config=prod.jest.config.js"
+    "test": "vitest --passWithNoTests"
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.9.5",
