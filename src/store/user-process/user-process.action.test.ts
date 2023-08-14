@@ -51,7 +51,7 @@ describe('User async actions' , () => {
   });
 
   describe('loginAction', () => {
-    it('should dispatch "loginAction.pending", "redirectToRoute", "loginAction.fulfilled" when server response 200', async() => {
+    it('should dispatch "loginAction.pending", "redirectToRoute", "loginAction.fulfilled" , and get pending types of "fetchOffersAction" and "fetchFavAction" when server response 200', async() => {
       const fakeUser: TAuthData = { login: 'test@test.ru', password: '123456' };
       const fakeServerReply = { token: 'secret' , email: 'test@test.ru'};
       mockAxiosAdapter.onPost(APIRoute.Login).reply(200, fakeServerReply);
