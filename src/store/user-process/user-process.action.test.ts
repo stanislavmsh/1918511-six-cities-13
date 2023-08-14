@@ -68,7 +68,7 @@ describe('User async actions' , () => {
       ]);
     });
 
-    it('should call "saveToken" once with the received token', async () => {
+    it('should call "saveUserInfo" once with the received token', async () => {
       const fakeUser: TAuthData = { login: 'test@test.ru', password: '123456' };
       const fakeServerReplay = { token: 'secret', email: 'test@test.ru' };
       mockAxiosAdapter.onPost(APIRoute.Login).reply(200, fakeServerReplay);
