@@ -7,10 +7,6 @@ import { fetchFavAction, fetchOffersAction } from './offers-data.action';
 import { APIRoute } from '../../const';
 import { State } from '../../types/state';
 import { AppThunkDispatch, extractActionsTypes, makeFakeOffersList } from '../../utils/mocks';
-import { TAuthData } from '../../types/auth-data';
-import { redirectToRoute } from '../action';
-import * as tokenStorage from '../../services/token';
-import { loginAction } from '../user-process/user-process.action';
 
 
 describe('Async actions' , () => {
@@ -57,20 +53,43 @@ describe('Async actions' , () => {
 
     });
 
+
+  });
+
+  describe('fetchFavAction', () => {
+    it('should dispatch "fetchFavAction.pending", "fetchFavAction.fulfilled" when server response 200' , async () => {
+      const favMockOffers = makeFakeOffersList().filter((elem) =>
+        elem.isFavorite === true
+      );
+
+      mockAxiosAdapter.onGet(APIRoute.Favorite).reply(200, favMockOffers);
+      await store.dispatch(fetchFavAction());
+
+      const emmitedActions = store.getActions();
+      const extractedActionTypes = extractActionsTypes(store.getActions());
+      const fetchFavActionFulfulled = emmitedActions.at(1) as ReturnType<typeof fetchFavAction.fulfilled>;
+
+      expect(extractedActionTypes).toEqual([
+        fetchFavAction.pending.type,
+        fetchFavAction.fulfilled.type,
+      ]);
+
+      expect(fetchFavActionFulfulled.payload).toEqual(favMockOffers);
+    });
+
+    it('should dispatch "fetchFavAction.pending", "fetchFavAction.rejected" when server response 400', async () => {
+      mockAxiosAdapter.onGet(APIRoute.Favorite).reply(400, []);
+
+      await store.dispatch(fetchFavAction());
+      const actions = extractActionsTypes(store.getActions());
+
+      expect(actions).toEqual([
+        fetchFavAction.pending.type,
+        fetchFavAction.rejected.type
+      ]);
+
+    });
   });
 
 
 });
-
-// const fakeUser: TAuthData = {login: 'test@test.ru', password: '123456'};
-//       const fakeServerReplay = { token: 'secret' };
-//       mockAxiosAdapter.onPost(APIRoute.Login).reply(200, fakeServerReplay);
-
-//       await store.dispatch(loginAction(fakeUser));
-//       const actions = extractActionsTypes(store.getActions());
-
-//       expect(actions).toEqual([
-//         loginAction.pending.type,
-//         redirectToRoute.type,
-//         loginAction.fulfilled.type,
-//       ]);c

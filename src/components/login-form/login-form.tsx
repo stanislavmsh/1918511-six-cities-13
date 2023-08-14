@@ -2,6 +2,7 @@ import {FormEvent , useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/user-process/user-process.action';
+import { fetchOffersAction, fetchFavAction } from '../../store/offers-data/offers-data.action';
 
 type TInputValues = {
   login: string;
