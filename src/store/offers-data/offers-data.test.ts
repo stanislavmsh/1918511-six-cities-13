@@ -10,6 +10,7 @@ const initialState = {
   sortedOffers: [],
   hasError: false,
   favorites: [],
+  sortedBy: SortingOption.Popular,
 };
 const offersMock = makeFakeOffersList();
 
@@ -60,6 +61,7 @@ describe('offersData reducers', () => {
     const expectedState = [...offersMock].sort((a, b) => b.price - a.price);
 
     expect(newState.sortedOffers).toEqual(expectedState);
+    expect(newState.sortedBy).toBe(SortingOption.HighToLow);
 
   });
 

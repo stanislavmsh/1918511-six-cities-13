@@ -2,20 +2,22 @@ import React, { useState , useCallback} from 'react';
 import { SortingOption } from '../../const';
 import { useDispatch } from 'react-redux';
 import { sortOffers } from '../../store/offers-data/offers-data.slice';
+import { useAppSelector } from '../../hooks';
+import { getSortedBy } from '../../store/offers-data/offers-data.selectors';
 import cn from 'classnames';
 import styles from './sorting-options.module.css';
 
 function SortingOptions() : JSX.Element {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [selectedSort, setSelectedSort] = useState<string>('Popular');
   const dispatch = useDispatch();
+
+  const currentSort = useAppSelector(getSortedBy);
 
   const handleOpenList = useCallback(() => {
     setIsOpened((opened) => !opened);
   },[]);
 
   const handleOptionClick = useCallback((optionText : SortingOption) => () => {
-    setSelectedSort(optionText);
     setIsOpened(false);
     dispatch(sortOffers(optionText));
   },[dispatch]);
@@ -28,7 +30,7 @@ function SortingOptions() : JSX.Element {
         tabIndex={0}
         onClick={handleOpenList}
       >
-        {selectedSort}
+        {currentSort}
         <svg className={`places__sorting-arrow ${styles.sorting__arrow}`}>
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
@@ -42,7 +44,7 @@ function SortingOptions() : JSX.Element {
           <li
             key={`${elem}=xxxoptionxxx`}
             className={cn('places__option',
-              {'places__option--active' : selectedSort === elem}
+              {'places__option--active' : currentSort === elem}
             )}
             tabIndex={0}
             onClick={handleOptionClick(elem)}

@@ -1,20 +1,13 @@
 import {render , screen} from '@testing-library/react';
 import NotFoundScreen from './not-found-screen';
-import { BrowserRouter } from 'react-router-dom';
-
-function MockNotFoundScreen() : JSX.Element {
-  return(
-    <BrowserRouter>
-      <NotFoundScreen />
-    </BrowserRouter>
-  );
-}
+import { withHistory } from '../../utils/mock-component';
 
 describe('NotFoundScreen tests', () => {
+  const preparedComponent = withHistory(<NotFoundScreen />);
 
   it('Page: should render page', () => {
 
-    const { getByTestId } = render(<MockNotFoundScreen />);
+    const { getByTestId } = render(preparedComponent);
     const headingComponent = getByTestId('404page');
 
     expect(headingComponent).toBeInTheDocument();
@@ -23,7 +16,7 @@ describe('NotFoundScreen tests', () => {
 
   it('Link: should navigate to main page' , () => {
 
-    render(<MockNotFoundScreen />);
+    render(preparedComponent);
     const links : HTMLAnchorElement[] = screen.getAllByRole('link');
 
     expect(links[0].href).toContain('/');
