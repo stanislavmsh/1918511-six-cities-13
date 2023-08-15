@@ -1,5 +1,5 @@
 import { store } from '../store';
-import { AuthStatus } from '../const';
+import { AuthStatus , SortingOption } from '../const';
 import { TOffersList } from './offers-list';
 
 export type TUserProcess = {
@@ -13,6 +13,7 @@ export type TOffersData = {
   sortedOffers: TOffersList[];
   hasError: boolean;
   favorites: TOffersList[];
+  sortedBy: SortingOption;
 }
 
 export type State = ReturnType<typeof store.getState>;

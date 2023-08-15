@@ -11,6 +11,7 @@ const initialState: TOffersData = {
   sortedOffers: [],
   hasError: false,
   favorites: [],
+  sortedBy: SortingOption.Popular,
 };
 export const offersData = createSlice({
   name: NameSpace.Offers,
@@ -26,15 +27,19 @@ export const offersData = createSlice({
       switch (action.payload) {
         case SortingOption.LowToHigh:
           state.sortedOffers.sort((a, b) => a.price - b.price);
+          state.sortedBy = SortingOption.LowToHigh;
           break;
         case SortingOption.HighToLow:
           state.sortedOffers.sort((a, b) => b.price - a.price);
+          state.sortedBy = SortingOption.HighToLow;
           break;
         case SortingOption.Top:
           state.sortedOffers.sort((a, b) => b.rating - a.rating);
+          state.sortedBy = SortingOption.Top;
           break;
         default:
           state.sortedOffers = state.offers.filter((elem) => elem.city.name === state.cityName);
+          state.sortedBy = SortingOption.Popular;
           break;
       }
     },

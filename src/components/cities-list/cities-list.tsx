@@ -1,7 +1,7 @@
-import { CityName } from '../../const';
+import { CityName, SortingOption } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCityName } from '../../store/offers-data/offers-data.selectors';
-import { cityNameChange, sortOffersByCity } from '../../store/offers-data/offers-data.slice';
+import { cityNameChange, sortOffers, sortOffersByCity } from '../../store/offers-data/offers-data.slice';
 import React, { useCallback } from 'react';
 import cn from 'classnames';
 import style from './cities-list.module.css';
@@ -10,10 +10,10 @@ function CitiesList() {
   const selectedCityName = useAppSelector(getCityName);
   const dispatch = useAppDispatch();
 
-
   const handleCityNameClick = useCallback((cityName : string) => () => {
     dispatch(sortOffersByCity(cityName));
     dispatch(cityNameChange(cityName));
+    dispatch(sortOffers(SortingOption.Popular));
   },[dispatch]);
 
   return (
@@ -36,4 +36,3 @@ function CitiesList() {
 }
 
 export const MemoizedCitiesList = React.memo(CitiesList);
-
