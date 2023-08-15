@@ -14,13 +14,8 @@ function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Eleme
   const parsedId = useParams().id || '';
   const token = getToken();
 
-  const {form , onStarChangeHandler , textChangeHandler , submitCommentHandler} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
-  const isCommentSubmitAvailable = form.comment.length > 50 && form.rating !== 0;
-
-  // const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
-  //   evt.preventDefault();
-  //   submitComment();
-  // } , [submitComment]);
+  const {form , onStarChangeHandler , textChangeHandler , submitCommentHandler , isLoading} = useCommentSubmission({parsedId , token , setCurrentOfferComments});
+  const isCommentSubmitAvailable = form.comment.length > 50 && form.rating !== 0 && !isLoading;
 
   return (
     <form
@@ -28,13 +23,12 @@ function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Eleme
       className="reviews__form form"
       action="#"
       method="post"
-
     >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
 
-      <Stars onStarChange={onStarChangeHandler} currentRating={form.rating}/>
+      <Stars loadingStatus={isLoading} onStarChange={onStarChangeHandler} currentRating={form.rating}/>
 
       <textarea
         maxLength={300}
@@ -44,6 +38,7 @@ function CommentForm({ setCurrentOfferComments } : TCommentFormProps): JSX.Eleme
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
+        disabled={isLoading}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

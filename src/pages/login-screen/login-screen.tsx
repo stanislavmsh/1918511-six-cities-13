@@ -1,16 +1,18 @@
-import { Link , Navigate } from 'react-router-dom';
-import styles from './login-screen.module.css';
-import {FormEvent , useRef} from 'react';
+import { Link , Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { loginAction } from '../../store/user-process/user-process.action';
 import { AppRoute, AuthStatus } from '../../const';
 import { getAuthStatus } from '../../store/user-process/user-process.selectors';
-import { toast } from 'react-toastify';
+import { cityNameChange, sortOffersByCity } from '../../store/offers-data/offers-data.slice';
+import { CityName } from '../../const';
+import LoginForm from '../../components/login-form/login-form';
+import styles from './login-screen.module.css';
 
 function LoginScreen(): JSX.Element {
-  const usernameRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
 
+  const arrayOfCityNames = Object.values(CityName);
+  const randomCityName = arrayOfCityNames[(Math.floor(Math.random() * arrayOfCityNames.length))];
+
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const userLoginStatus = useAppSelector(getAuthStatus);
@@ -19,25 +21,10 @@ function LoginScreen(): JSX.Element {
     return <Navigate to={AppRoute.Root}/>;
   }
 
-  const regexEmail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
-  const regexPassword = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
-
-  const handleSubmit = (evt : FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
-    if (usernameRef.current !== null && passwordRef.current !== null) {
-
-      if(!regexEmail.test(usernameRef.current.value) || !regexPassword.test(passwordRef.current.value)) {
-        toast.warn('Invalid login form');
-        return;
-      }
-
-      dispatch(loginAction({
-        login: usernameRef.current.value,
-        password: passwordRef.current.value,
-      })
-      );
-    }
+  const handleCityNameClick = () => {
+    dispatch(cityNameChange(randomCityName));
+    dispatch(sortOffersByCity(randomCityName));
+    navigate(AppRoute.Root);
   };
 
   return (
@@ -58,40 +45,16 @@ function LoginScreen(): JSX.Element {
         <div className="page__login-container container">
           <section className="login">
             <h1 className="login__title">Sign in</h1>
-            <form onSubmit={handleSubmit} className="login__form form" action="" method="post">
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">E-mail</label>
-                <input
-                  ref={usernameRef}
-                  className="login__input form__input"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  required
-                />
-              </div>
-              <div className="login__input-wrapper form__input-wrapper">
-                <label className="visually-hidden">Password</label>
-                <input
-                  ref={passwordRef}
-                  className="login__input form__input"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  required
-                />
-              </div>
-              <button
-                className="login__submit form__submit button"
-                type="submit"
-              >Sign in
-              </button>
-            </form>
+            <LoginForm />
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <a
+                className="locations__item-link"
+                href="#"
+                onClick={handleCityNameClick}
+              >
+                <span>{randomCityName}</span>
               </a>
             </div>
           </section>

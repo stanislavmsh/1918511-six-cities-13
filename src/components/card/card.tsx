@@ -1,3 +1,4 @@
+import React from 'react';
 import { TOffersList } from '../../types/offers-list';
 import { MouseEvent, useCallback} from 'react';
 import { Link } from 'react-router-dom';
@@ -17,17 +18,23 @@ type TCardProps = {
 function Card(props: TCardProps): JSX.Element {
   const { offer, onListItemHover , isOfferPage , isFavPage, isMainPage} = props;
   const { price, title, type, id, previewImage , isPremium , rating , isFavorite} = offer;
-  const {favoriteStatus , handleFavClick } = useFavoriteStatus({id , isFavorite});
+  const {favoriteStatus , handleFavClick } = useFavoriteStatus({id , isFavorite , isMainPage});
 
   const handleCardItemHover = useCallback((evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     onListItemHover(offer.id);
   },[offer.id , onListItemHover]);
 
+  const handleCardItemLeave = useCallback((evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    onListItemHover('');
+  },[ onListItemHover]);
+
   return (
     <article
       id = {id}
       onMouseEnter={handleCardItemHover}
+      onMouseLeave={handleCardItemLeave}
       key={id}
       className={cn('place-card',
         {'cities__card': isMainPage},
@@ -80,7 +87,7 @@ function Card(props: TCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${rating / 5 * 100}%` }}></span>
+            <span style={{ width: ` ${(Math.round(rating) / 5 * 100)}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -91,10 +98,14 @@ function Card(props: TCardProps): JSX.Element {
             {title}
           </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{type.charAt(0).toUpperCase() + type.slice(1)}</p>
       </div>
     </article>
   );
 }
 
-export default Card;
+
+const MemoizedCard = React.memo(Card);
+
+export default MemoizedCard;
+

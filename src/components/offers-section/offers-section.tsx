@@ -1,6 +1,6 @@
 import OffersNotFound from '../offers-not-found/offers-not-found';
 import OffersFound from '../offers-found/offers-found';
-import CitiesList from '../cities-list/cities-list';
+import { MemoizedCitiesList } from '../cities-list/cities-list';
 import { useAppSelector } from '../../hooks';
 import { getSortedOffers } from '../../store/offers-data/offers-data.selectors';
 import cn from 'classnames';
@@ -15,7 +15,7 @@ function OffersSection () {
     >
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
-        <CitiesList />
+        <MemoizedCitiesList />
       </div>
       <div className="cities">
         { isFound ? <OffersFound filteredOffersByCity={offersByCity}/> : <OffersNotFound />}

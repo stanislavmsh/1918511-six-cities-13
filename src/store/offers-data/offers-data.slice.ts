@@ -46,13 +46,6 @@ export const offersData = createSlice({
         return elem;
       });
 
-      state.sortedOffers = state.sortedOffers.map((elem) => {
-        if (elem.id === action.payload.currentId) {
-          return {...elem, isFavorite: action.payload.favStatus};
-        }
-        return elem;
-      });
-
       state.favorites = state.offers.filter((elem) =>
         elem.isFavorite === true
       );
@@ -66,10 +59,12 @@ export const offersData = createSlice({
         state.isOffersDataLoading = true;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
-        state.offers = action.payload.data;
+        state.offers = action.payload;
         state.isOffersDataLoading = false;
-        state.cityName = action.payload.city;
-        state.sortedOffers = action.payload.data.filter((elem) => elem.city.name === state.cityName);
+        state.sortedOffers = action.payload.filter((elem) => elem.city.name === state.cityName);
+        state.favorites = state.offers.filter((elem) =>
+          elem.isFavorite === true
+        );
       })
       .addCase(fetchFavAction.fulfilled , (state, action) => {
         state.favorites = action.payload;
@@ -82,6 +77,7 @@ export const offersData = createSlice({
       })
       .addCase(fetchFavAction.rejected, (state) => {
         state.favorites = [];
+        state.hasError = true;
       });
   }
 });

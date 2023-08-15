@@ -1,4 +1,4 @@
-import Card from '../card/card';
+import MemoizedCard from '../card/card';
 import { TOffersList } from '../../types/offers-list';
 
 type TNearbyCardsProps = {
@@ -15,7 +15,7 @@ function NearbyCards ({offersList , onListItemHover}: TNearbyCardsProps) : JSX.E
       </h2>
       <div className="near-places__list places__list">
         {offersList.map((elem) => (
-          <Card
+          <MemoizedCard
             key={`nearby.${elem.id}`}
             isFavPage={false}
             isOfferPage

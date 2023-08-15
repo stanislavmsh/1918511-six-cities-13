@@ -1,4 +1,4 @@
-import { useState , useCallback} from 'react';
+import React, { useState , useCallback} from 'react';
 import { SortingOption } from '../../const';
 import { useDispatch } from 'react-redux';
 import { sortOffers } from '../../store/offers-data/offers-data.slice';
@@ -55,4 +55,7 @@ function SortingOptions() : JSX.Element {
   );
 }
 
-export default SortingOptions;
+
+const MemoizedSortingOptions = React.memo(SortingOptions);
+
+export default MemoizedSortingOptions;

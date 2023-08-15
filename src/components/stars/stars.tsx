@@ -3,7 +3,7 @@ import React from 'react';
 const RatingStarsData = [
   {
     value: '1',
-    id: '1-star',
+    id: '1-stars',
     title: 'terribly',
   },
   {
@@ -32,9 +32,10 @@ const RatingStarsData = [
 type TStarsProps = {
   onStarChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
   currentRating: number;
+  loadingStatus: boolean;
 }
 
-function Stars ({onStarChange, currentRating} : TStarsProps) : JSX.Element {
+function Stars ({onStarChange, currentRating , loadingStatus} : TStarsProps) : JSX.Element {
 
   const isRatingSelected = (value : string) : boolean => currentRating === Number(value);
 
@@ -52,6 +53,7 @@ function Stars ({onStarChange, currentRating} : TStarsProps) : JSX.Element {
               id={elem.id}
               type="radio"
               checked={isRatingSelected(elem.value)}
+              disabled={loadingStatus}
 
             />
             <label

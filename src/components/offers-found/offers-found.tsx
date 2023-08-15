@@ -3,8 +3,8 @@ import { useState , useCallback } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getCityName } from '../../store/offers-data/offers-data.selectors';
 import Map from '../map/map';
-import Cards from '../cards/cards';
-import SortingOptions from '../sorting-options/sorting-options';
+import MemoizedSortingOptions from '../sorting-options/sorting-options';
+import MemoizedCards from '../cards/cards';
 
 type TOffersFoundProps = {
   filteredOffersByCity: TOffersList[];
@@ -12,7 +12,7 @@ type TOffersFoundProps = {
 
 function OffersFound ({filteredOffersByCity} : TOffersFoundProps) : JSX.Element {
 
-  const [selectedOffer, setSelectedOffer] = useState<TOffersList | undefined>(undefined);
+  const [selectedOffer, setSelectedOffer] = useState<TOffersList | undefined>();
   const handleListItemHover = useCallback((listItemId: string) => {
     const currentOffer = filteredOffersByCity.find((offer) => offer.id === listItemId);
 
@@ -29,9 +29,9 @@ function OffersFound ({filteredOffersByCity} : TOffersFoundProps) : JSX.Element 
           {filteredOffersByCity.length} place{filteredOffersByCity.length !== 1 ? 's' : ''} to stay in {selectedCityName}
         </b>
 
-        <SortingOptions />
+        <MemoizedSortingOptions />
 
-        <Cards cardsList={filteredOffersByCity} onListItemHover={handleListItemHover}/>
+        <MemoizedCards cardsList={filteredOffersByCity} onListItemHover={handleListItemHover}/>
 
       </section>
       <div className="cities__right-section">

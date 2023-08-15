@@ -18,17 +18,27 @@ type TUseCommentSubmissionProps = {
 
 function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUseCommentSubmissionProps) {
   const [form , setForm] = useState<TCommentFormProps>({ rating: 0 , comment: ''});
+  const [isLoading, setIsloading] = useState<boolean>(false);
 
   const onStarChangeHandler = useCallback((evt: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({...form , rating: Number(evt.target.value)});
-  }, [form]);
+    setForm((prevState) => ({
+      ...prevState,
+      rating: Number(evt.target.value),
+    })
+    );
+  }, []);
 
   const textChangeHandler = useCallback((evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setForm({...form, comment: evt.target.value});
-  }, [form]);
+    setForm((prevState) => ({
+      ...prevState,
+      comment: evt.target.value,
+    })
+    );
+  }, []);
 
   const submitCommentHandler = useCallback((evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    setIsloading(true);
     axios.post<TReview>(`${BACKEND_URL}/comments/${parsedId || ''}`, form , {
       headers: {
         'x-token': token
@@ -46,9 +56,11 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUse
           comment: '',
           rating: 0
         });
+        setIsloading(false);
       }
       )
       .catch(() => {
+        setIsloading(false);
         toast.warn('comment sending error');
       }
       );
@@ -56,7 +68,7 @@ function useCommentSubmission ({parsedId, token, setCurrentOfferComments} : TUse
 
   },[form , parsedId , setCurrentOfferComments , token]);
 
-  return { form, onStarChangeHandler, textChangeHandler, submitCommentHandler };
+  return { form, onStarChangeHandler, textChangeHandler, submitCommentHandler , isLoading };
 }
 
 
