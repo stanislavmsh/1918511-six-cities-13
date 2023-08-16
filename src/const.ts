@@ -45,4 +45,3 @@ export const URL_MARKER_CURRENT = `${MARKER_URL}pin-active.svg`;
 export const URL_MARKER_DEFAULT = `${MARKER_URL}pin.svg`;
 export const BACKEND_URL = 'https://13.design.pages.academy/six-cities';
 
-export const TIMEOUT_SHOW_ERROR = 2000;
